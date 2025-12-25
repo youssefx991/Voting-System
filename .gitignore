@@ -1,0 +1,41 @@
+# ===== Build artifacts =====
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.lib
+*.dll
+
+# ===== Code::Blocks =====
+*.cbp
+*.layout
+*.depend
+
+# ===== Code::Blocks build folders =====
+bin/
+obj/
+
+# ===== Debug / Release =====
+Debug/
+Release/
+
+# ===== Temporary files =====
+*.log
+*.tmp
+*.bak
+*.swp
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+
+# ===== Editor / IDE settings =====
+.vscode/
+.idea/
+
+# ===== CMake (if used later) =====
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
