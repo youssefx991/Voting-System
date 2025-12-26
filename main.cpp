@@ -44,6 +44,18 @@ public:
         candidateIds.push_back(candidateId);
     }
 
+     void removeCandidate(int candidateId)
+    {
+    for (auto i = candidateIds.begin(); i != candidateIds.end(); ++i)
+        {
+        if (*i == candidateId)
+        {
+            candidateIds.erase(i);
+            return;
+        }
+        }
+    }
+
     vector<int>& getCandidates()
     {
         return candidateIds;
@@ -347,8 +359,8 @@ public:
         cout << "Election with ID " << electionId << " not found." << endl;
     }
 
-    void addCandidate(int electionId, int candidateId) {}
-    void removeCandidate(int electionId, int candidateId) {}
+    void addCandidate(int electionId, int candidateId);
+    void removeCandidate(int electionId, int candidateId);
 
     void viewVoters() {}
     void banVoter(int voterId) {}
@@ -448,6 +460,106 @@ void User::viewElections()
         cout << "Status: " << e.isOpen() << endl;
     }
 }
+
+/*Admin methods implementation */
+void Admin::addCandidate(int electionId, int candidateId)
+{
+    Election* targetElection = nullptr;
+    Candidate* targetCandidate = nullptr;
+
+    // 1 Find election
+    for (Election& e : system->getElections())
+    {
+        if (e.getElectionId() == electionId)
+        {
+            targetElection = &e;
+            break;
+        }
+    }
+
+    if (!targetElection)
+    {
+        cout << "Election with ID " << electionId << " not found.\n";
+        return;
+    }
+
+    // 2 Find candidate in users
+    for (User* u : system->getUsers())
+    {
+        if (u->getUserId() == candidateId)
+        {
+            targetCandidate = dynamic_cast<Candidate*>(u);
+            break;
+        }
+    }
+
+    if (!targetCandidate)
+    {
+        cout << "User is not a valid candidate or does not exist.\n";
+        return;
+    }
+
+    // 3  Check if candidate already added
+    for (int cid : targetElection->getCandidates())
+    {
+        if (cid == candidateId)
+        {
+            cout << "Candidate already added to this election.\n";
+            return;
+        }
+    }
+
+    //  Add candidate
+    targetElection->addCandidate(candidateId);
+    cout << "Candidate " << candidateId
+         << " added to Election " << electionId << " successfully.\n";
+}
+
+ void Admin::removeCandidate(int electionId, int candidateId) {
+
+      Election* targetElection = nullptr;
+    Candidate* targetCandidate = nullptr;
+
+    // 1 Find election
+    for (Election& e : system->getElections())
+    {
+        if (e.getElectionId() == electionId)
+        {
+            targetElection = &e;
+            break;
+        }
+    }
+
+    if (!targetElection)
+    {
+        cout << "Election with ID " << electionId << " not found.\n";
+        return;
+    }
+
+    // 2 Find candidate in users
+    for (User* u : system->getUsers())
+    {
+        if (u->getUserId() == candidateId)
+        {
+            targetCandidate = dynamic_cast<Candidate*>(u);
+            break;
+        }
+    }
+
+    if (!targetCandidate)
+    {
+        cout << "User is not a valid candidate or does not exist.\n";
+        return;
+    }
+
+
+    // 3 Remove candidate
+    targetElection->removeCandidate(candidateId);
+    cout << "Candidate " << candidateId
+         << " deleted  from Election " << electionId << " successfully.\n";
+
+ }
+
 
 
 
@@ -687,3 +799,4 @@ int main()
 
     return 0;
 }
+
