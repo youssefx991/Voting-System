@@ -94,9 +94,9 @@ public:
 
     virtual string getRole() const = 0;
 
-    virtual void login() {}
-    virtual void registerUser() {}
-    virtual void logout() {}
+    virtual void login();
+    virtual void registerUser();
+    virtual void logout();
 
     bool getBanStatus() const { return isBanned; }
     void ban() { isBanned = true; }
@@ -174,9 +174,9 @@ public:
           profileInfo(profile) {}
 
     string getRole() const override { return "Candidate"; }
-    void login() override;
+    // void login() override;
     void registerUser() override;
-    void logout() override;
+    // void logout() override;
 
     void viewMyElections();
     void viewVoteCount(int electionId);
@@ -314,6 +314,118 @@ void User::viewElections()
         cout << "Id: " << e.getElectionId() << endl;
         cout << "Status: " << e.isOpen() << endl;
     }
+}
+
+void User::login()
+{
+    bool validInput = false;
+    string inputUsername, inputPassword;
+    do
+    {
+        cout << "Enter username: ";
+        cin >> inputUsername;
+
+        cout << "Enter password: ";
+        cin >> inputPassword;
+
+        for (User *user : system->getUsers())
+        {
+            if (user->getUsername() == inputUsername &&
+                user->getPassword() == inputPassword)
+            {
+                username = inputUsername;
+                password = inputPassword;
+                cout << "Login successful!" << endl;
+                validInput = true;
+                break;
+            }
+        }
+        if (!validInput)
+        {
+            cout << "Invalid username or password. Please try again." << endl;
+        }
+
+    } while (!validInput);
+
+    // Navigation to menu will be added later
+}
+
+void User::registerUser()
+{
+    bool exists = false;
+    string inputUsername, inputEmail, inputPassword;
+
+    do
+    {
+        exists = false;
+        cout << "Enter username: ";
+        cin >> inputUsername;
+
+        if (inputUsername.empty())
+        {
+            cout << "Username cannot be empty." << endl;
+            continue;
+        }
+        for (User *user : system->getUsers())
+        {
+            if (user->getUsername() == inputUsername)
+            {
+                cout << "Username already exists." << endl;
+                exists = true;
+                break;
+            }
+        }
+
+        if (exists)
+            continue;
+
+        cout << "Enter email: ";
+        cin >> inputEmail;
+
+        if (inputEmail.empty())
+        {
+            cout << "Email cannot be empty." << endl;
+            continue;
+        }
+        for (User *user : system->getUsers())
+        {
+            if (user->getEmail() == inputEmail)
+            {
+                cout << "Email already registered." << endl;
+                exists = true;
+                break;
+            }
+        }
+        if (exists)
+            continue;
+
+        cout << "Enter password: ";
+        cin >> inputPassword;
+        if (inputPassword.empty())
+        {
+            cout << "Password cannot be empty." << endl;
+            continue;
+        }
+
+        exists = false;
+        // navigation to menu will be added later
+
+        break; // exit loop on successful registration
+
+    } while (true);
+
+    // Registration logic (e.g., saving to database) will be added later
+    cout << "Registration successful!" << endl;
+    username = inputUsername;
+    email = inputEmail;
+    password = inputPassword;
+    system->getUsers().push_back(this); // add user to list of users
+}
+
+void User::logout()
+{
+    cout << "Logged out successfully." << endl;
+    // Navigation to main menu will be added later
 }
 
 ///////////////////////////////
@@ -599,126 +711,15 @@ void Guest::viewElectionDetails(int electionId)
 //     }
 ///////////////////////////////////////////
 /*---  candidate methods implementation */
-void Candidate::login()
-{
-    bool validInput = false;
-    string inputUsername, inputPassword;
-    do
-    {
-        cout << "Enter username: ";
-        cin >> inputUsername;
-
-        cout << "Enter password: ";
-        cin >> inputPassword;
-
-        for (User *user : system->getUsers())
-        {
-            if (user->getUsername() == inputUsername &&
-                user->getPassword() == inputPassword)
-            {
-                username = inputUsername;
-                password = inputPassword;
-                cout << "Login successful!" << endl;
-                validInput = true;
-                break;
-            }
-        }
-        if (!validInput)
-        {
-            cout << "Invalid username or password. Please try again." << endl;
-        }
-
-    } while (!validInput);
-
-    // Navigation to candidate menu will be added later
-}
-
 void Candidate::registerUser()
 {
-    bool exists = false;
-    string inputUsername, inputEmail, inputPassword, inputProfileInfo;
+    User::registerUser(); // call base registration first
 
-    do
-    {
-        exists = false;
-        cout << "Enter username: ";
-        cin >> inputUsername;
-
-        if (inputUsername.empty())
-        {
-            cout << "Username cannot be empty." << endl;
-            continue;
-        }
-        for (User *user : system->getUsers())
-        {
-            if (user->getUsername() == inputUsername)
-            {
-                cout << "Username already exists." << endl;
-                exists = true;
-                break;
-            }
-        }
-
-        if (exists)
-            continue;
-
-        cout << "Enter email: ";
-        cin >> inputEmail;
-
-        if (inputEmail.empty())
-        {
-            cout << "Email cannot be empty." << endl;
-            continue;
-        }
-        for (User *user : system->getUsers())
-        {
-            if (user->getEmail() == inputEmail)
-            {
-                cout << "Email already registered." << endl;
-                exists = true;
-                break;
-            }
-        }
-        if (exists)
-            continue;
-
-        cout << "Enter password: ";
-        cin >> inputPassword;
-        if (inputPassword.empty())
-        {
-            cout << "Password cannot be empty." << endl;
-            continue;
-        }
-
-        cout << "Enter profile info: ";
-        cin.ignore(); // to ignore the newline character left in the buffer
-        getline(cin, inputProfileInfo);
-        if (inputProfileInfo.empty())
-        {
-            cout << "Profile info cannot be empty." << endl;
-            continue;
-        }
-
-        exists = false;
-
-        // Navigation to candidate menu will be added later
-        break; // exit loop on successful registration
-
-    } while (true);
-
-    // Registration logic (e.g., saving to database) will be added later
-    cout << "Registration successful!" << endl;
-    username = inputUsername;
-    email = inputEmail;
-    password = inputPassword;
+    string inputProfileInfo;
+    cout << "Enter profile info: ";
+    cin.ignore(); // to ignore the newline character left in the buffer
+    getline(cin, inputProfileInfo);
     profileInfo = inputProfileInfo;
-    system->getUsers().push_back(this); // add candidate to list of users
-}
-
-void Candidate::logout()
-{
-    cout << "Logged out successfully." << endl;
-    // Navigation to main menu will be added later
 }
 
 void Candidate::viewMyElections()
