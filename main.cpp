@@ -681,39 +681,39 @@ void Guest::viewElectionDetails(int electionId)
      cout << "Election not found.\n";
 }
 
-// void Guest::viewCandidates(int electionId) // tamer , mo3tasem
-//     {
-//         bool electionFound = false;
-//
-//         for (const Election& e : system->getElections())
-//         {
-//             if (e.getElectionId() == electionId)
-//             {
-//                 electionFound = true;
-//                 cout << "Candidates for Election: " << e.getTitle() << "\n";
-//
-//                 for (int candidateId : e.getCandidates())
-//                 {
-//                     for (User* u : system->getUsers())
-//                     {
-//                         if (u->getUserId() == candidateId &&
-//                             u->getRole() == "Candidate")
-//                         {
-//                             cout << "- Candidate ID: " << u->getUserId()
-//                                  << ", Username: " << u->getUsername()
-//                                  << ", Email: " << u->getEmail() << endl;
-//                         }
-//                     }
-//                 }
-//                 return;
-//             }
-//         }
-//
-//         if (!electionFound)
-//         {
-//             cout << "Election with ID " << electionId << " not found.\n";
-//         }
-//     }
+ void Guest::viewCandidates(int electionId) // tamer , mo3tasem
+     {
+         bool electionFound = false;
+
+         for ( Election& e : system->getElections())
+         {
+             if (e.getElectionId() == electionId)
+             {
+                 electionFound = true;
+                 cout << "Candidates for Election: " << e.getTitle() << "\n";
+
+                 for (int candidateId : e.getCandidates())
+                 {
+                     for (User* u : system->getUsers())
+                     {
+                         if (u->getUserId() == candidateId &&
+                             u->getRole() == "Candidate")
+                         {
+                             cout << "- Candidate ID: " << u->getUserId()
+                                  << ", Username: " << u->getUsername()
+                                  << ", Email: " << u->getEmail() << endl;
+                         }
+                     }
+                 }
+                 return;
+             }
+         }
+
+         if (!electionFound)
+         {
+             cout << "Election with ID " << electionId << " not found.\n";
+         }
+     }
 ///////////////////////////////////////////
 /*---  candidate methods implementation */
 
@@ -989,25 +989,30 @@ int main()
     return 0;
 }
 
-void testGuest(VotingSystem& system) //Mo3tasem
+void testGuest(VotingSystem& system) // Mo3tasem, Ziad Tamer
 {
     cout << "\n===== TEST: Guest View Elections =====\n";
-
     Guest guest(&system);
+
+    cout << "\n===== TEST: Guest View Rules =====\n";
+    guest.viewVotingRules();
 
     // Test view all elections
     guest.viewElections();
 
     cout << "\n===== TEST: Guest View Election Details (Election ID = 1) =====\n";
-
-    // Test valid election
     guest.viewElectionDetails(1);
 
     cout << "\n===== TEST: Guest View Election Details (Invalid ID) =====\n";
-
-    // Test invalid election
     guest.viewElectionDetails(999);
+
+    cout << "\n===== TEST: Guest View Candidates (Election ID = 1) =====\n";
+    guest.viewCandidates(1);
+
+    cout << "\n===== TEST: Guest View Candidates (Invalid Election ID) =====\n";
+    guest.viewCandidates(999);
 }
+
 
 void TestCandidate(VotingSystem &system) // Youssef Wagih
 {
