@@ -202,8 +202,8 @@ public:
     void addCandidate(int electionId, int candidateId);
     void removeCandidate(int electionId, int candidateId);
 
-    void viewVoters() {}
-    void banVoter(int voterId) {}
+    void viewVoters() ;
+    void banVoter(int voterId);
     void viewResults(int electionId) {}
 };
 
@@ -629,6 +629,44 @@ void Admin::closeElection(int electionId)
         }
     }
     cout << "Election with ID " << electionId << " not found." << endl;
+}
+
+
+void Admin::viewVoters()
+{
+    cout << "\n===== VOTERS LIST =====\n";
+
+    for (User* u : system->getUsers())
+    {
+        if (u->getRole() == "Voter")
+        {
+            cout << "ID: " << u->getUserId()
+                 << ", Username: " << u->getUsername()
+                 << ", Email: " << u->getEmail()
+                 << ", Status: " << (u->getBanStatus() ? "BANNED" : "ACTIVE")
+                 << endl;
+        }
+    }
+}
+void Admin::banVoter(int voterId)
+{
+    for (User* u : system->getUsers())
+    {
+        if (u->getUserId() == voterId && u->getRole() == "Voter")
+        {
+            if (u->getBanStatus())
+            {
+                cout << "Voter is already banned.\n";
+                return;
+            }
+
+            u->ban();
+            cout << "Voter with ID " << voterId << " has been banned successfully.\n";
+            return;
+        }
+    }
+
+    cout << "Voter with ID " << voterId << " not found.\n";
 }
 //////////////////////////////////////
 /*Guest  methods implementation*/
@@ -1072,3 +1110,4 @@ void TestCandidate(VotingSystem &system) // Youssef Wagih
 
     cout << "\n===== TEST COMPLETE =====\n";
 }
+
