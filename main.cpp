@@ -145,8 +145,8 @@ public:
 
     string getRole() const override { return "Voter"; }
 
-    void vote(int electionId, int candidateId) {}
-    bool hasVoted(int electionId) const { return false; }
+    void vote(int electionId, int candidateId);
+    bool hasVoted(int electionId) const;
     void viewVotingStatus() {}
 
     void login() override
@@ -587,6 +587,8 @@ void Admin::updateElection(int electionId)
     }
     cout << "Election with ID " << electionId << " not found." << endl;
 }
+
+
 void Admin::openElection(int electionId)
 {
     for (Election &e : system->getElections())
@@ -650,6 +652,8 @@ void Guest::viewElections()
         cout << endl;
     }
 }
+
+
 void Guest::viewElectionDetails(int electionId)
 {
     for (const Election &e : system->getElections())
@@ -712,6 +716,9 @@ void Guest::viewElectionDetails(int electionId)
 //     }
 ///////////////////////////////////////////
 /*---  candidate methods implementation */
+
+
+
 void Candidate::registerUser()
 {
     User::registerUser(); // call base registration first
@@ -756,6 +763,107 @@ void Candidate::viewVoteCount(int electionId)
          << ": " << count << endl;
 }
 void testGuest(VotingSystem& system);
+
+
+
+
+
+
+
+
+
+
+void Voter::vote(int electionId, int candidateId)
+{
+    Election* targetElection = nullptr;
+
+    for (Election& e : system->getElections())
+    {
+        if (e.getElectionId() == electionId)
+        {
+            targetElection = &e;
+            break;
+        }
+    }
+
+    if (!targetElection)
+    {
+        cout << "Election not found.\n";
+        return;
+    }
+
+    if(!targetElection->isOpen())
+    {
+        cout << "Election not Open.\n";
+        return;
+    }
+
+    bool candidateFound = false;
+
+    for (int cid : targetElection->getCandidates())
+    {
+        if (cid == candidateId)
+        {
+            candidateFound = true;
+            break;
+        }
+    }
+
+    if (!candidateFound)
+    {
+        cout << "This candidate is not part of this election.\n";
+        return;
+    }
+
+    if(hasVoted(electionId)){
+        cout << "This candidate is not part of this election.\n";
+        return;
+    }
+
+
+    int voteId = system->getVotes().size() + 1;
+    Vote newVote(voteId, electionId, userId, candidateId);
+    system->getVotes().push_back(newVote);
+    cout << "Vote submitted successfully.\n";
+}
+
+
+bool Voter::hasVoted(int electionId) const
+{
+    // Loop through all votes in the system
+    for (const Vote& v : system->getVotes())
+    {
+        // Check if this voter has already voted in this election
+        if (v.getVoterId() == userId &&
+            v.getElectionId() == electionId)
+        {
+            return true;
+        }
+    }
+
+    // No vote found for this voter in this election
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ---------- main ---------- */
 int main()
