@@ -1,0 +1,89 @@
+# depslib dependency file v1.0
+1766922408 source:d:\iti\uml\voting system\vs_01\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<Limits>
+	"Election.h"
+
+1766925018 source:d:\iti\uml\voting system\vs_01\election.cpp
+	"Election.h"
+
+1766925000 d:\iti\uml\voting system\vs_01\election.h
+	<string>
+	<vector>
+
+1766923947 source:d:\iti\uml\voting system\vs_01\admin.cpp
+	"Admin.h"
+	"VotingSystem.h"
+	"Election.h"
+	"Candidate.h"
+	<iostream>
+	<limits>
+
+1766923859 d:\iti\uml\voting system\vs_01\admin.h
+	"User.h"
+
+1766922554 d:\iti\uml\voting system\vs_01\user.h
+	<string>
+
+1766925265 d:\iti\uml\voting system\vs_01\votingsystem.h
+	<vector>
+	"Vote.h"
+	"User.h"
+	"Guest.h"
+	"Admin.h"
+	"Candidate.h"
+	"Election.h"
+
+1766923490 d:\iti\uml\voting system\vs_01\candidate.h
+	"User.h"
+
+1766922678 source:d:\iti\uml\voting system\vs_01\user.cpp
+	"User.h"
+	"VotingSystem.h"
+	"Election.h"
+	<iostream>
+
+1766924139 source:d:\iti\uml\voting system\vs_01\vote.cpp
+	"Vote.h"
+
+1766924095 d:\iti\uml\voting system\vs_01\vote.h
+
+1766923352 source:d:\iti\uml\voting system\vs_01\voter.cpp
+	"Voter.h"
+	"VotingSystem.h"
+	"Election.h"
+	"Vote.h"
+	<iostream>
+
+1766923226 d:\iti\uml\voting system\vs_01\voter.h
+	"User.h"
+
+1766924497 source:d:\iti\uml\voting system\vs_01\votingsystem.cpp
+	"VotingSystem.h"
+	"User.h"
+	"Candidate.h"
+	"Voter.h"
+	"Admin.h"
+	"Election.h"
+	"Vote.h"
+	<iostream>
+
+1766923638 source:d:\iti\uml\voting system\vs_01\candidate.cpp
+	"Candidate.h"
+	"VotingSystem.h"
+	"Election.h"
+	"Vote.h"
+	<iostream>
+
+1766925054 source:d:\iti\uml\voting system\vs_01\guest.cpp
+	"Guest.h"
+	"VotingSystem.h"
+	"Election.h"
+	"User.h"
+	<iostream>
+
+1766923016 d:\iti\uml\voting system\vs_01\guest.h
+	<string>
+
