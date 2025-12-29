@@ -179,7 +179,7 @@ public:
     // void logout() override;
 
     void viewMyElections();
-    void viewVoteCount(int electionId);
+    int viewVoteCount(int electionId);
 };
 
 /* ---------- Admin ---------- */
@@ -202,7 +202,7 @@ public:
     void addCandidate(int electionId, int candidateId);
     void removeCandidate(int electionId, int candidateId);
 
-    void viewVoters() ;
+    void viewVoters();
     void banVoter(int voterId);
     void viewResults(int electionId) {}
 };
@@ -294,17 +294,25 @@ public:
         votes.push_back(Vote(4, 2, 4, 104));
         votes.push_back(Vote(5, 2, 5, 105));
     }
-    void run() {}
+    void run();
 
     void guestMenu() {}
     void voterMenu(Voter *voter) {}
     void adminMenu(Admin *admin) {}
+
+    /* ---------- Candidate Menus ---------- */
+    void candidateAuthMenu();
+    void candidateMenu(Candidate *);
+    void candidateElectionsMenu(Candidate *);
+    void candidateElectionDetailsMenu(Candidate *, int);
+    void viewElectionCandidates(Election *);
 };
 
 //////////////////////////////
 
 /* ---------- Test Cases ---------- */
 void TestCandidate(VotingSystem &system);
+void TestingCandidateMenu(VotingSystem &system);
 
 /* ---------- User method implementation ---------- */
 void User::viewElections()
@@ -333,6 +341,7 @@ void User::login()
             if (user->getUsername() == inputUsername &&
                 user->getPassword() == inputPassword)
             {
+                userId = user->getUserId();
                 username = inputUsername;
                 password = inputPassword;
                 cout << "Login successful!" << endl;
@@ -416,6 +425,17 @@ void User::registerUser()
 
     // Registration logic (e.g., saving to database) will be added later
     cout << "Registration successful!" << endl;
+
+    // generate userId -- must be unique
+    int maxId = 0;
+    for (User *user : system->getUsers())
+    {
+        if (user->getUserId() > maxId)
+        {
+            maxId = user->getUserId();
+        }
+    }
+    userId = maxId + 1;
     username = inputUsername;
     email = inputEmail;
     password = inputPassword;
@@ -588,7 +608,6 @@ void Admin::updateElection(int electionId)
     cout << "Election with ID " << electionId << " not found." << endl;
 }
 
-
 void Admin::openElection(int electionId)
 {
     for (Election &e : system->getElections())
@@ -631,12 +650,11 @@ void Admin::closeElection(int electionId)
     cout << "Election with ID " << electionId << " not found." << endl;
 }
 
-
 void Admin::viewVoters()
 {
     cout << "\n===== VOTERS LIST =====\n";
 
-    for (User* u : system->getUsers())
+    for (User *u : system->getUsers())
     {
         if (u->getRole() == "Voter")
         {
@@ -650,7 +668,7 @@ void Admin::viewVoters()
 }
 void Admin::banVoter(int voterId)
 {
-    for (User* u : system->getUsers())
+    for (User *u : system->getUsers())
     {
         if (u->getUserId() == voterId && u->getRole() == "Voter")
         {
@@ -691,7 +709,6 @@ void Guest::viewElections()
     }
 }
 
-
 void Guest::viewElectionDetails(int electionId)
 {
     for (const Election &e : system->getElections())
@@ -713,49 +730,45 @@ void Guest::viewElectionDetails(int electionId)
             cout << endl;
             return;
         }
-
-
     }
-     cout << "Election not found.\n";
+    cout << "Election not found.\n";
 }
 
- void Guest::viewCandidates(int electionId) // tamer , mo3tasem
-     {
-         bool electionFound = false;
+void Guest::viewCandidates(int electionId) // tamer , mo3tasem
+{
+    bool electionFound = false;
 
-         for ( Election& e : system->getElections())
-         {
-             if (e.getElectionId() == electionId)
-             {
-                 electionFound = true;
-                 cout << "Candidates for Election: " << e.getTitle() << "\n";
+    for (Election &e : system->getElections())
+    {
+        if (e.getElectionId() == electionId)
+        {
+            electionFound = true;
+            cout << "Candidates for Election: " << e.getTitle() << "\n";
 
-                 for (int candidateId : e.getCandidates())
-                 {
-                     for (User* u : system->getUsers())
-                     {
-                         if (u->getUserId() == candidateId &&
-                             u->getRole() == "Candidate")
-                         {
-                             cout << "- Candidate ID: " << u->getUserId()
-                                  << ", Username: " << u->getUsername()
-                                  << ", Email: " << u->getEmail() << endl;
-                         }
-                     }
-                 }
-                 return;
-             }
-         }
+            for (int candidateId : e.getCandidates())
+            {
+                for (User *u : system->getUsers())
+                {
+                    if (u->getUserId() == candidateId &&
+                        u->getRole() == "Candidate")
+                    {
+                        cout << "- Candidate ID: " << u->getUserId()
+                             << ", Username: " << u->getUsername()
+                             << ", Email: " << u->getEmail() << endl;
+                    }
+                }
+            }
+            return;
+        }
+    }
 
-         if (!electionFound)
-         {
-             cout << "Election with ID " << electionId << " not found.\n";
-         }
-     }
+    if (!electionFound)
+    {
+        cout << "Election with ID " << electionId << " not found.\n";
+    }
+}
 ///////////////////////////////////////////
 /*---  candidate methods implementation */
-
-
 
 void Candidate::registerUser()
 {
@@ -786,7 +799,7 @@ void Candidate::viewMyElections()
     }
 }
 
-void Candidate::viewVoteCount(int electionId)
+int Candidate::viewVoteCount(int electionId)
 {
     int count = 0;
     for (const Vote &v : system->getVotes())
@@ -797,25 +810,16 @@ void Candidate::viewVoteCount(int electionId)
             count++;
         }
     }
-    cout << "Total votes received in Election " << electionId
-         << ": " << count << endl;
+    return count;
 }
-void testGuest(VotingSystem& system);
 
-
-
-
-
-
-
-
-
+void testGuest(VotingSystem &system);
 
 void Voter::vote(int electionId, int candidateId)
 {
-    Election* targetElection = nullptr;
+    Election *targetElection = nullptr;
 
-    for (Election& e : system->getElections())
+    for (Election &e : system->getElections())
     {
         if (e.getElectionId() == electionId)
         {
@@ -830,7 +834,7 @@ void Voter::vote(int electionId, int candidateId)
         return;
     }
 
-    if(!targetElection->isOpen())
+    if (!targetElection->isOpen())
     {
         cout << "Election not Open.\n";
         return;
@@ -853,11 +857,11 @@ void Voter::vote(int electionId, int candidateId)
         return;
     }
 
-    if(hasVoted(electionId)){
+    if (hasVoted(electionId))
+    {
         cout << "This candidate is not part of this election.\n";
         return;
     }
-
 
     int voteId = system->getVotes().size() + 1;
     Vote newVote(voteId, electionId, userId, candidateId);
@@ -865,11 +869,10 @@ void Voter::vote(int electionId, int candidateId)
     cout << "Vote submitted successfully.\n";
 }
 
-
 bool Voter::hasVoted(int electionId) const
 {
     // Loop through all votes in the system
-    for (const Vote& v : system->getVotes())
+    for (const Vote &v : system->getVotes())
     {
         // Check if this voter has already voted in this election
         if (v.getVoterId() == userId &&
@@ -883,24 +886,197 @@ bool Voter::hasVoted(int electionId) const
     return false;
 }
 
+/* -------- Candidate Menus --------*/
+void VotingSystem::candidateAuthMenu()
+{
+    int choice = 0;
+    do
+    {
+        cout << "\n===== CANDIDATE AUTH MENU =====\n";
+        cout << "1. Login\n";
+        cout << "2. Register\n";
+        cout << "3. Back to Main Menu\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        Candidate *candidate = nullptr;
+        switch (choice)
+        {
+        case 1:
+        {
+            candidate = new Candidate(0, "", "", "", "", this);
+            candidate->login();
+            candidateMenu(candidate);
+            break;
+        }
+        case 2:
+        {
+            candidate = new Candidate(0, "", "", "", "", this);
+            candidate->registerUser();
+            candidateMenu(candidate);
+            break;
+        }
+        case 3:
+            cout << "Returning to Main Menu.\n";
+            // function to return to main menu will be added later
+            break;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 3);
+}
+void VotingSystem::candidateMenu(Candidate *candidate)
+{
+    int choice = 0;
+    do
+    {
+        cout << "\n=== Candidate Menu ===\n";
+        cout << "1. View My Elections\n";
+        cout << "2. Logout\n";
+        cout << "Choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            candidateElectionsMenu(candidate);
+            break;
+        case 2:
+            candidate->logout();
+            return;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (true);
+}
+void VotingSystem::candidateElectionsMenu(Candidate* candidate)
+{
+    cout << "\n=== My Elections ===\n";
+    candidate->viewMyElections();
+
+    int electionID;
+    do 
+    {
+        cout << "Enter Election ID to view details (or 0 to go back): ";
+        cin >> electionID;
+        if (electionID == 0)
+            return;
+        else
+            candidateElectionDetailsMenu(candidate, electionID);
+    } while (true);
+}
+void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electionID)
+{
+    Election* target = nullptr;
+
+    for (Election& e : elections)
+    {
+        if (e.getElectionId() == electionID)
+        {
+            for (int cid : e.getCandidates())
+            {
+                if (cid == candidate->getUserId())
+                {
+                    target = &e;
+                    break;
+                }
+            }
+            if (target != nullptr)
+                break;
+        }
+    }
+
+    if (!target)
+    {
+        cout << "Election not found.\n";
+        return;
+    }
+
+    int choice = 0;
+    do 
+    {
+        cout << "\n=== Election Details ===\n";
+        cout << "Title: " << target->getTitle() << endl;
+        cout << "Description: " << target->getDescription() << endl;
+        cout<< "Status: " << (target->isOpen() ? "OPENED" : "NOT OPENED") << endl;
+        cout <<"Vote Count: " << candidate->viewVoteCount(electionID) << endl;
+        cout << "1. View Candidates\n";
+        cout << "2. Back to My Elections\n";
+        cout << "Choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            viewElectionCandidates(target);
+            break;
+        case 2:
+            return;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }   
+    } while (true);
+}
+void VotingSystem::viewElectionCandidates(Election* election)
+{
+    cout << "\n=== Candidates in Election: " << election->getTitle() << " ===\n";
+    for (int candidateId : election->getCandidates())
+    {
+        for (User* u : users)
+        {
+            if (u->getUserId() == candidateId &&
+                u->getRole() == "Candidate")
+            {
+                cout << "- Candidate ID: " << u->getUserId()
+                     << ", Username: " << u->getUsername()
+                     << ", Email: " << u->getEmail() << endl;
+            }
+        }
+    }
+
+    cout << "Press anything to go back: ";
+    cin.ignore();
+    cin.get();
+    return;
+}
 
 
 
+/* ---------- Run ---------- */
+void VotingSystem::run()
+{
+    int choice = 0;
+    do
+    {
+        cout << "\n===== VOTING SYSTEM MAIN MENU =====\n";
+        cout << "1. Guest\n";
+        cout << "2. Candidate\n";
+        cout << "3. Admin\n";
+        cout << "4. Voter\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        switch (choice)
+        {
+        case 1:
+            // guestMenu(); to be implemented
+            break;
+        case 2:
+            candidateAuthMenu();
+            break;
+        case 3:
+            // adminAuthMenu(); to be implemented
+            break;
+        case 4:
+            //voterAuthMenu(); to be implemented
+            break;
+        case 5:
+            cout << "Exiting the system. Goodbye!\n";
+            break;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 5);
+}
 
 
 /* ---------- main ---------- */
@@ -908,7 +1084,7 @@ int main()
 {
     VotingSystem system;
     system.fillDate(); // IMPORTANT
-    testGuest(system);//test
+    testGuest(system); // test
 
     cout << "\n===== TEST: ensure if admins created sucessfully =====\n";
     for (User *u : system.getUsers())
@@ -1021,13 +1197,11 @@ int main()
         }
     }
 
-
-    TestCandidate(system);
-
+    TestingCandidateMenu(system);
     return 0;
 }
 
-void testGuest(VotingSystem& system) // Mo3tasem, Ziad Tamer
+void testGuest(VotingSystem &system) // Mo3tasem, Ziad Tamer
 {
     cout << "\n===== TEST: Guest View Elections =====\n";
     Guest guest(&system);
@@ -1051,10 +1225,9 @@ void testGuest(VotingSystem& system) // Mo3tasem, Ziad Tamer
     guest.viewCandidates(999);
 }
 
-
 void TestCandidate(VotingSystem &system) // Youssef Wagih
 {
-    cout<<"\n\n===== TEST CASES FOR CANDIDATE =====\n";
+    cout << "\n\n===== TEST CASES FOR CANDIDATE =====\n";
     cout << "\n===== TEST: Display All Users =====\n";
     // display all users
     cout << "===== All Users in System =====\n";
@@ -1111,3 +1284,7 @@ void TestCandidate(VotingSystem &system) // Youssef Wagih
     cout << "\n===== TEST COMPLETE =====\n";
 }
 
+void TestingCandidateMenu(VotingSystem &system)
+{
+    system.run();
+}
