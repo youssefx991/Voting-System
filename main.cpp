@@ -296,7 +296,7 @@ public:
     }
     void run();
 
-    void guestMenu() {}
+    void guestMenu();
     void voterMenu(Voter *voter) {}
     void adminMenu(Admin *admin) {}
 
@@ -306,6 +306,7 @@ public:
     void candidateElectionsMenu(Candidate *);
     void candidateElectionDetailsMenu(Candidate *, int);
     void viewElectionCandidates(Election *);
+
 };
 
 //////////////////////////////
@@ -690,24 +691,64 @@ void Admin::banVoter(int voterId)
 /*Guest  methods implementation*/
 void Guest::viewElections()
 {
+    int choice = -1;
 
-    cout << "===== Available Elections =====\n";
-    for (const Election &e : system->getElections())
+    do
     {
-        cout << "ID: " << e.getElectionId()
-             << "  Title: " << e.getTitle()
-             << "  Status: ";
+        cout << "\n===== AVAILABLE ELECTIONS =====\n";
 
-        if (e.getStatus() == ElectionStatus::CREATED)
-            cout << "Created";
-        else if (e.getStatus() == ElectionStatus::OPENED)
-            cout << "Opened";
-        else
-            cout << "Closed";
+        for (const Election &e : system->getElections())
+        {
+            cout << "ID: " << e.getElectionId()
+                 << " | Title: " << e.getTitle()
+                 << " | Status: ";
 
-        cout << endl;
-    }
+            if (e.getStatus() == ElectionStatus::CREATED)
+                cout << "Created";
+            else if (e.getStatus() == ElectionStatus::OPENED)
+                cout << "Opened";
+            else
+                cout << "Closed";
+
+            cout << endl;
+        }
+
+        cout << "\n===== OPTIONS =====\n";
+        cout << "1. View Election Details\n";
+        cout << "2. View Election Candidates\n";
+        cout << "0. Back\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+        {
+            int electionId;
+            cout << "Enter Election ID: ";
+            cin >> electionId;
+            viewElectionDetails(electionId);
+            break;
+        }
+        case 2:
+        {
+            int electionId;
+            cout << "Enter Election ID: ";
+            cin >> electionId;
+            viewCandidates(electionId);
+            break;
+        }
+        case 0:
+            cout << "Returning to Guest Menu...\n";
+            break;
+
+        default:
+            cout << "Invalid choice. Try again.\n";
+        }
+
+    } while (choice != 0);
 }
+
 
 void Guest::viewElectionDetails(int electionId)
 {
@@ -715,7 +756,7 @@ void Guest::viewElectionDetails(int electionId)
     {
         if (e.getElectionId() == electionId)
         {
-            cout << "===== Election Details =====\n";
+            cout << "\n===== Election Details =====\n";
             cout << "Title: " << e.getTitle() << endl;
             cout << "Description: " << e.getDescription() << endl;
             cout << "Status: ";
@@ -728,13 +769,18 @@ void Guest::viewElectionDetails(int electionId)
                 cout << "Closed";
 
             cout << endl;
-            return;
+            break;
         }
     }
-    cout << "Election not found.\n";
+
+    cout << "\n0. Back\n";
+    cout << "Enter 0 to return: ";
+    int back;
+    cin >> back;
 }
 
-void Guest::viewCandidates(int electionId) // tamer , mo3tasem
+
+void Guest::viewCandidates(int electionId)
 {
     bool electionFound = false;
 
@@ -743,7 +789,7 @@ void Guest::viewCandidates(int electionId) // tamer , mo3tasem
         if (e.getElectionId() == electionId)
         {
             electionFound = true;
-            cout << "Candidates for Election: " << e.getTitle() << "\n";
+            cout << "\nCandidates for Election: " << e.getTitle() << "\n";
 
             for (int candidateId : e.getCandidates())
             {
@@ -752,21 +798,81 @@ void Guest::viewCandidates(int electionId) // tamer , mo3tasem
                     if (u->getUserId() == candidateId &&
                         u->getRole() == "Candidate")
                     {
-                        cout << "- Candidate ID: " << u->getUserId()
-                             << ", Username: " << u->getUsername()
-                             << ", Email: " << u->getEmail() << endl;
+                        cout << "- ID: " << u->getUserId()
+                             << " | Username: " << u->getUsername()
+                             << " | Email: " << u->getEmail() << endl;
                     }
                 }
             }
-            return;
+            break;
         }
     }
 
     if (!electionFound)
-    {
-        cout << "Election with ID " << electionId << " not found.\n";
-    }
+        cout << "Election not found.\n";
+
+    cout << "\n0. Back\n";
+    cout << "Enter 0 to return: ";
+    int back;
+    cin >> back;
 }
+
+/* -------- Guest Menus --------*/
+
+void VotingSystem::guestMenu()
+{
+    int choice = 0;
+
+    do
+    {
+        cout << "\n===== GUEST MENU =====\n";
+        cout << "1. View Elections\n";
+//        cout << "2. View Election Details\n";
+//        cout << "3. View Election Candidates\n";
+        cout << "2. Back to Main Menu\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        Guest guest(this); // Guest has access to system
+
+        switch (choice)
+        {
+        case 1:
+            guest.viewElections();
+            break;
+
+//        case 2:
+//        {
+//            int electionId;
+//            cout << "Enter Election ID: ";
+//            cin >> electionId;
+//            guest.viewElectionDetails(electionId);
+//            break;
+//        }
+//
+//        case 3:
+//        {
+//            int electionId;
+//            cout << "Enter Election ID: ";
+//            cin >> electionId;
+//            guest.viewCandidates(electionId);
+//            break;
+//        }
+//
+        case 2:
+            cout << "Returning to Main Menu...\n";
+            break;
+
+        default:
+            cout << "Invalid choice. Try again.\n";
+        }
+
+    } while (choice != 2);
+}
+
+
+
+
 ///////////////////////////////////////////
 /*---  candidate methods implementation */
 
@@ -954,7 +1060,7 @@ void VotingSystem::candidateElectionsMenu(Candidate* candidate)
     candidate->viewMyElections();
 
     int electionID;
-    do 
+    do
     {
         cout << "Enter Election ID to view details (or 0 to go back): ";
         cin >> electionID;
@@ -992,7 +1098,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
     }
 
     int choice = 0;
-    do 
+    do
     {
         cout << "\n=== Election Details ===\n";
         cout << "Title: " << target->getTitle() << endl;
@@ -1012,7 +1118,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
             return;
         default:
             cout << "Invalid choice. Please try again.\n";
-        }   
+        }
     } while (true);
 }
 void VotingSystem::viewElectionCandidates(Election* election)
@@ -1058,7 +1164,7 @@ void VotingSystem::run()
         switch (choice)
         {
         case 1:
-            // guestMenu(); to be implemented
+            guestMenu();
             break;
         case 2:
             candidateAuthMenu();
