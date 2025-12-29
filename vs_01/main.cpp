@@ -1,5 +1,8 @@
 #include <iostream>
 #include <limits>
+#include<windows.h>
+#include <conio.h>
+#include <string.h>
 
 #include "VotingSystem.h"
 #include "Guest.h"
@@ -18,6 +21,11 @@ void testCandidate(VotingSystem& system);
 /* ---------- main ---------- */
 int main()
 {
+       HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    SetConsoleMode(hOut, dwMode | 0x0004);
+
     cout<< "===== VOTING SYSTEM TESTS =====\n";
     VotingSystem system;
     system.fillData();
