@@ -6,8 +6,10 @@
 #include "Admin.h"
 #include "Election.h"
 #include "Vote.h"
+#include "UI.h"
 
 #include <iostream>
+#include <limits>
 
 using namespace std;
 
@@ -91,7 +93,41 @@ void VotingSystem::fillData()
 }
 
 
-void VotingSystem::run() {}
+void VotingSystem::run() {
+    Admin* admin = new Admin(1001, "votingsysAdmin", "admin1@mail.com", "123", this);
+    // For testing, we directly call adminMenu with a dummy admin
+    loading("Loading admin menu");
+    adminMenu(admin);
+}
 void VotingSystem::guestMenu() {}
 void VotingSystem::voterMenu(Voter* voter) {}
-void VotingSystem::adminMenu(Admin* admin) {}
+void VotingSystem::adminMenu(Admin* admin) {
+    int choice;
+    string adminName = admin->getUsername();
+    cout << BOLD <<"WELCOME " << adminName << "!" << RESET << endl  ;
+    do {
+    
+        cout << "1. Create Election\n";
+        cout << "2. View All Elections\n";
+        cout << "3. View All Voters\n";
+        cout << "0. Logout\n";
+        cout << "Choose: ";
+        cin >> choice;
+        if (choice < 0 || choice > 3 || cin.fail()) {
+            cin.clear(); // clear the fail state
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+            cout << RED << "Invalid input! Please enter a number from 0 to 3 .\n" << RESET;
+        }   
+        switch (choice) {
+            case 1: admin->createElection(); break;
+            case 2: admin->viewElections(); break;
+            case 3: admin->viewVoters(); break;
+            case 0:
+                cout << YELLOW << "Logging out...\n" << RESET;
+                admin->logout();
+                break;
+            default:
+                cout << RED << "Invalid choice!\n" << RESET;
+        }
+    } while (choice != 0);
+}

@@ -18,12 +18,14 @@ void testCandidate(VotingSystem& system);
 /* ---------- main ---------- */
 int main()
 {
+    cout<< "===== VOTING SYSTEM TESTS =====\n";
     VotingSystem system;
     system.fillData();
+    system.run();
 
-    testGuest(system);
-    testAdmin(system);
-    testCandidate(system);
+    // testGuest(system);
+    // testAdmin(system);
+    // testCandidate(system);
 
     return 0;
 }

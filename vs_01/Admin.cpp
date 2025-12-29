@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <limits>
+#include "UI.h"
 
 using namespace std;
 
@@ -138,20 +139,35 @@ void Admin::closeElection(int electionId)
 /* ---------- View Voters ---------- */
 void Admin::viewVoters()
 {
-    cout << "\n===== VOTERS LIST =====\n";
-
+    loading("Loading Voters List");
+  
+    cout << "+-------------------------------------------------------------------+\n";
+    cout << "                     VOTER LIST WINDOW                               \n";
+    cout << "+-------------------------------------------------------------------+\n";
     for (User* u : system->getUsers())
     {
         if (u->getRole() == "Voter")
         {
             cout << "ID: " << u->getUserId()
-                 << ", Username: " << u->getUsername()
+                 << ", Username: " <<BOLD << u->getUsername() << RESET
                  << ", Email: " << u->getEmail()
-                 << ", Status: "
-                 << (u->getBanStatus() ? "BANNED" : "ACTIVE")
-                 << endl;
+                 << ", Status: ";   
+                if (u->getBanStatus())
+                    cout << RED << "BANNED";
+                else
+                    cout << GREEN << "ACTIVE";
+
+                cout << RESET << endl;
+
+            this_thread::sleep_for(chrono::milliseconds(250));
         }
+        
     }
+    cout << "+-------------------------------------------------------------------+\n";
+
+
+    
+    cout << endl;
 }
 
 /* ---------- Ban Voter ---------- */
