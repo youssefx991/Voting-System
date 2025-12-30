@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <limits>
-
+#include <unordered_map>
 using namespace std;
 
 /* ---------- Destructor ---------- */
@@ -409,6 +409,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
         {
             int myVotes = candidate->viewVoteCount(electionID);
             cout << "Your Votes: " << myVotes << endl;
+            displayElectionResults(electionID);
         }
 
         cout << "1. View Election Candidates\n";
@@ -527,3 +528,39 @@ void VotingSystem::voterAuthMenu()
     } while (choice != 3);
 }
 
+/* ---------- Election Result ---------- */
+std::unordered_map<int, int> VotingSystem::displayElectionResults(int electionId)
+{
+    std::unordered_map<int, int> results; // candidateId -> voteCount
+
+    // Initialize results map with candidates in the election
+    for (const Election& election : elections)
+    {
+        if (election.getElectionId() == electionId)
+        {
+            for (int candidateId : election.getCandidates())
+            {
+                results[candidateId] = 0;
+            }
+            break;
+        }
+    }
+
+    // Tally votes for the specified election
+    for (const Vote& vote : votes)
+    {
+        if (vote.getElectionId() == electionId)
+        {
+            results[vote.getCandidateId()]++;
+        }
+    }
+
+    // Display results
+    cout << "\n=== Election Results for Election ID: " << electionId << " ===\n";
+    for (const auto& entry : results)
+    {
+        cout << "Candidate ID: " << entry.first << " - Votes: " << entry.second << endl;
+    }
+
+    return results;
+}

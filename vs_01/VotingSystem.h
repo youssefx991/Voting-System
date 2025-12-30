@@ -2,6 +2,7 @@
 #define VOTING_SYSTEM_H
 
 #include <vector>
+#include <unordered_map>
 
 #include "Vote.h"
 #include "User.h"
@@ -48,6 +49,10 @@ public:
     /* ---------- Authentication Menus ---------- */
     void adminAuthMenu();
     void voterAuthMenu();
+
+    /* ---------- Election Result ---------- */
+    std::unordered_map<int, int> displayElectionResults(int electionId);
+
 };
 
 #endif
