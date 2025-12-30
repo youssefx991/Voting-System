@@ -1,5 +1,6 @@
 #include "Election.h"
-
+#include "Candidate.h"
+#include "VotingSystem.h"
 /* ---------- Constructor ---------- */
 Election::Election(int id, string t, string d)
     : electionId(id),
@@ -85,9 +86,10 @@ void Election::setDescription(const string& newDescription)
     description = newDescription;
 }
 
-Candidate* Candidate:: getCandidateById(VotingSystem* system, int id)
+Candidate* Candidate::getCandidateById(VotingSystem* system, int id)
 {
-    for (User* u : system->getUsers())
+    vector<User*> users = system->getUsers();
+    for (User* u : users)
     {
         Candidate* c = dynamic_cast<Candidate*>(u);
         if (c && c->getUserId() == id)
