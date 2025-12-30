@@ -559,7 +559,18 @@ std::unordered_map<int, int> VotingSystem::displayElectionResults(int electionId
     cout << "\n=== Election Results for Election ID: " << electionId << " ===\n";
     for (const auto& entry : results)
     {
-        cout << "Candidate ID: " << entry.first << " - Votes: " << entry.second << endl;
+        // display candidate id and name nad vote count
+        for (User* u : users)
+        {
+            if (u->getUserId() == entry.first &&
+                u->getRole() == "Candidate")
+            {
+                cout << "- Candidate ID: " << u->getUserId()
+                     << ", Username: " << u->getUsername()
+                     << ", Votes: " << entry.second << endl;
+                break;
+            }
+        }
     }
 
     return results;
