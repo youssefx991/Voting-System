@@ -459,8 +459,7 @@ void VotingSystem::adminAuthMenu()
     {
         cout << "\n===== Admin AUTH MENU =====\n";
         cout << "1. Login\n";
-        cout << "2. Register\n";
-        cout << "3. Back to Main Menu\n";
+        cout << "2. Back to Main Menu\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -476,21 +475,13 @@ void VotingSystem::adminAuthMenu()
             break;
         }
         case 2:
-        {
-            admin = new Admin(0, "", "", "", this);
-            admin->registerUser();
-            loading("Loading admin menu");
-            adminMenu(admin);
-            break;
-        }
-        case 3:
             cout << "Returning to Main Menu.\n";
             // function to return to main menu will be added later
             break;
         default:
             cout << "Invalid choice. Please try again.\n";
         }
-    } while (choice != 3);
+    } while (choice != 2);
 }
 
 void VotingSystem::voterAuthMenu()
