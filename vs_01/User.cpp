@@ -78,6 +78,7 @@ void User::login()
             if (user->getUsername() == inputUsername &&
                 user->getPassword() == inputPassword)
             {
+                userId = user->getUserId();
                 username = inputUsername;
                 password = inputPassword;
                 cout << "Login successful!" << endl;
@@ -145,6 +146,17 @@ void User::registerUser()
     username = inputUsername;
     email = inputEmail;
     password = inputPassword;
+    
+    // generate userId -- must be unique
+    int maxId = 0;
+    for (User *user : system->getUsers())
+    {
+        if (user->getUserId() > maxId)
+        {
+            maxId = user->getUserId();
+        }
+    }
+    userId = maxId + 1;
 
     system->getUsers().push_back(this);
 }
