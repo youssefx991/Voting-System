@@ -21,6 +21,7 @@ public:
 
     int createElection();
     void updateElection(int electionId);
+    void getElection(Election &election );
 
     void openElection(int electionId);
     void closeElection(int electionId);
@@ -31,7 +32,8 @@ public:
     void viewVoters();
     void banVoter(int voterId);
 
-    void viewResults(int electionId); // (still empty if you want)
+    void viewResults(int electionId); 
 };
 
 #endif
+
