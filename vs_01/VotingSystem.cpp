@@ -127,6 +127,7 @@ void VotingSystem::run() {
         }
         case 4:
             //voterAuthMenu(); to be implemented
+            voterAuthMenu();
             break;
         case 5:
             cout << "Exiting the system. Goodbye!\n";
@@ -137,7 +138,25 @@ void VotingSystem::run() {
     } while (choice != 5);
 }
 void VotingSystem::guestMenu() {}
-void VotingSystem::voterMenu(Voter* voter) {}
+void VotingSystem::voterMenu(Voter* voter){
+    int choice = 0;
+    do
+    {
+        cout << "\n=== Voter Menu ===\n";
+        cout << "1. Logout\n";
+        cout << "Choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            voter->logout();
+            return;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (true);
+}
+
 void VotingSystem::adminMenu(Admin* admin) {
     int choice;
     string adminName = admin->getUsername();
@@ -189,6 +208,7 @@ void VotingSystem::candidateAuthMenu()
         {
             candidate = new Candidate(0, "", "", "", "", this);
             candidate->login();
+            loading("Loading candidate menu");
             candidateMenu(candidate);
             break;
         }
@@ -196,6 +216,7 @@ void VotingSystem::candidateAuthMenu()
         {
             candidate = new Candidate(0, "", "", "", "", this);
             candidate->registerUser();
+            loading("Loading candidate menu");
             candidateMenu(candidate);
             break;
         }
@@ -385,4 +406,42 @@ void VotingSystem::adminAuthMenu()
 void VotingSystem::voterAuthMenu()
 {
     // Implementation for voter authentication menu
+    // Implementation for admin authentication menu
+    int choice = 0;
+    do
+    {
+        cout << "\n===== Voter AUTH MENU =====\n";
+        cout << "1. Login\n";
+        cout << "2. Register\n";
+        cout << "3. Back to Main Menu\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        Voter *voter = nullptr;
+        switch (choice)
+        {
+        case 1:
+        {
+            voter = new Voter(0, "", "", "", this);
+            voter->login();
+            loading("Loading voter menu");
+            voterMenu(voter);
+            break;
+        }
+        case 2:
+        {
+            voter = new Voter(0, "", "", "", this);
+            voter->registerUser();
+            loading("Loading voter menu");
+            voterMenu(voter);
+            break;
+        }
+        case 3:
+            cout << "Returning to Main Menu.\n";
+            // function to return to main menu will be added later
+            break;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 3);
 }
