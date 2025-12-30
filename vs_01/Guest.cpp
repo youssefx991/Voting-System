@@ -78,7 +78,7 @@ void Guest::viewElections()
             int electionId;
             cout << "Enter Election ID: ";
             cin >> electionId;
-            viewCandidates(electionId);
+            void viewAllCandidates();
             break;
         }
         case 0:
@@ -121,41 +121,71 @@ void Guest::viewElectionDetails(int electionId)
     int back;
     cin >> back;
 }
-
-
-void Guest::viewCandidates(int electionId)
+void Guest::viewCandidateDetails(int candidateId)
 {
-    bool electionFound = false;
-
-    for (Election &e : system->getElections())
+    bool found = false;
+    for (User* u : system->getUsers())
     {
-        if (e.getElectionId() == electionId)
+        if (u->getUserId() == candidateId && u->getRole() == "Candidate")
         {
-            electionFound = true;
-            cout << "\nCandidates for Election: " << e.getTitle() << "\n";
+            found = true;
+            cout << "\n===== Candidate Details =====\n";
+            cout << "ID: " << u->getUserId() << endl;
+            cout << "Username: " << u->getUsername() << endl;
+            cout << "Email: " << u->getEmail() << endl;
+            cout << "Role: " << u->getRole() << endl;
 
-            for (int candidateId : e.getCandidates())
+
+            cout << "Participating in Elections:\n";
+            bool participates = false;
+            for (const Election &e : system->getElections())
             {
-                for (User *u : system->getUsers())
+                for (int id : e.getCandidates())
                 {
-                    if (u->getUserId() == candidateId &&
-                        u->getRole() == "Candidate")
+                    if (id == candidateId)
                     {
-                        cout << "- ID: " << u->getUserId()
-                             << " | Username: " << u->getUsername()
-                             << " | Email: " << u->getEmail() << endl;
+                        participates = true;
+                        cout << "- " << e.getTitle() << " (ID: " << e.getElectionId() << ")\n";
                     }
                 }
             }
+            if (!participates)
+                cout << "This candidate is not participating in any election.\n";
+
             break;
         }
     }
-
-    if (!electionFound)
-        cout << "Election not found.\n";
+    if (!found)
+        cout << "Candidate not found.\n";
 
     cout << "\n0. Back\n";
     cout << "Enter 0 to return: ";
     int back;
     cin >> back;
+}
+
+void Guest::viewAllCandidates()
+{
+    cout << "\n===== ALL CANDIDATES =====\n";
+
+
+    for (User* u : system->getUsers())
+    {
+        if (u->getRole() == "Candidate")
+        {
+            cout << "- ID: " << u->getUserId()
+                 << " | Username: " << u->getUsername()
+                 << " | Email: " << u->getEmail() << endl;
+        }
+    }
+
+
+    int choice = -1;
+    do
+    {
+        cout << "\nEnter Candidate ID to view details (0 to go back): ";
+        cin >> choice;
+        if (choice != 0)
+            viewCandidateDetails(choice);
+    } while (choice != 0);
 }

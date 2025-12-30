@@ -57,11 +57,7 @@ void testGuest(VotingSystem& system)
     cout << "\n--- Election Details (Invalid) ---\n";
     guest.viewElectionDetails(999);
 
-    cout << "\n--- Candidates (Election ID = 1) ---\n";
-    guest.viewCandidates(1);
 
-    cout << "\n--- Candidates (Invalid Election ID) ---\n";
-    guest.viewCandidates(999);
 }
 
 

@@ -19,9 +19,10 @@ public:
 
     void viewElections();
     void viewElectionDetails(int electionId);
-    void viewCandidates(int electionId);
+    void viewAllCandidates();
 
     void viewVotingRules();
+    void viewCandidateDetails(int candidateId);
 };
 
 #endif

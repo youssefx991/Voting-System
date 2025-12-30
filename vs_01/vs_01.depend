@@ -87,14 +87,14 @@
 1766923016 d:\iti\uml\voting system\vs_01\guest.h
 	<string>
 
-1767104162 source:d:\iti\swe & uml\project\voting-system\vs_01\guest.cpp
+1767106014 source:d:\iti\swe & uml\project\voting-system\vs_01\guest.cpp
 	"Guest.h"
 	"VotingSystem.h"
 	"Election.h"
 	"User.h"
 	<iostream>
 
-1767102816 d:\iti\swe & uml\project\voting-system\vs_01\guest.h
+1767105986 d:\iti\swe & uml\project\voting-system\vs_01\guest.h
 	<string>
 
 1767102861 d:\iti\swe & uml\project\voting-system\vs_01\votingsystem.h
@@ -121,7 +121,7 @@
 	<string>
 	<vector>
 
-1767102816 source:d:\iti\swe & uml\project\voting-system\vs_01\main.cpp
+1767106053 source:d:\iti\swe & uml\project\voting-system\vs_01\main.cpp
 	<iostream>
 	<limits>
 	<windows.h>
@@ -180,7 +180,7 @@
 1767102861 d:\iti\swe & uml\project\voting-system\vs_01\voter.h
 	"User.h"
 
-1767103861 source:d:\iti\swe & uml\project\voting-system\vs_01\votingsystem.cpp
+1767105975 source:d:\iti\swe & uml\project\voting-system\vs_01\votingsystem.cpp
 	"VotingSystem.h"
 	"User.h"
 	"Candidate.h"

@@ -140,17 +140,16 @@ void VotingSystem::run() {
 void VotingSystem::guestMenu()
 {
     int choice = 0;
-
+    Guest guest(this);
     do
     {
         cout << "\n===== GUEST MENU =====\n";
         cout << "1. View Voting Rules\n";
         cout << "2. View Elections\n";
-        cout << "3. Back to Main Menu\n";
+        cout << "3. View All Candidates\n";
+        cout << "4. Back to Main Menu\n";
         cout << "Enter your choice: ";
         cin >> choice;
-
-        Guest guest(this); // Guest has access to system
 
         switch (choice)
         {
@@ -161,15 +160,18 @@ void VotingSystem::guestMenu()
             guest.viewElections();
             break;
         case 3:
+            guest.viewAllCandidates();
+            break;
+        case 4:
             cout << "Returning to Main Menu...\n";
             break;
-
         default:
             cout << "Invalid choice. Try again.\n";
         }
 
-    } while (choice != 2);
+    } while (choice != 4);
 }
+
 
 void VotingSystem::voterMenu(Voter* voter){
     int choice = 0;
