@@ -17,17 +17,7 @@ string Voter::getRole() const
     return "Voter";
 }
 
-/* ---------- Login ---------- */
-void Voter::login()
-{
-    cout << "Enter username: ";
-    cin >> username;
 
-    cout << "Enter password: ";
-    cin >> password;
-
-    // Authentication logic can be added later
-}
 
 /* ---------- Voting ---------- */
 void Voter::vote(int electionId, int candidateId)

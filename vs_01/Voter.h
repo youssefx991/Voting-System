@@ -17,8 +17,6 @@ public:
     void vote(int electionId, int candidateId);
     bool hasVoted(int electionId) const;
     void viewVotingStatus();
-
-    void login() override;
 };
 
 #endif
