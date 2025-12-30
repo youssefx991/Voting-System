@@ -44,6 +44,10 @@ public:
     void candidateElectionsMenu(Candidate* candidate);
     void candidateElectionDetailsMenu(Candidate* candidate, int electionID);
     void viewElectionCandidates(Election* election);
+
+    /* ---------- Authentication Menus ---------- */
+    void adminAuthMenu();
+    void voterAuthMenu();
 };
 
 #endif

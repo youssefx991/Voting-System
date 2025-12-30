@@ -117,11 +117,12 @@ void VotingSystem::run() {
             break;
         case 3:
         {
-            // adminAuthMenu(); to be implemented
-            Admin* admin = new Admin(1001, "votingsysAdmin", "admin1@mail.com", "123", this);
-            // For testing, we directly call adminMenu with a dummy admin
-            loading("Loading admin menu");
-            adminMenu(admin);
+            // // adminAuthMenu(); to be implemented
+            // Admin* admin = new Admin(1001, "votingsysAdmin", "admin1@mail.com", "123", this);
+            // // For testing, we directly call adminMenu with a dummy admin
+            // loading("Loading admin menu");
+            // adminMenu(admin);
+            adminAuthMenu();
             break;
         }
         case 4:
@@ -336,4 +337,52 @@ void VotingSystem::viewElectionCandidates(Election* election)
     cin.ignore();
     cin.get();
     return;
+}
+
+/* ---------- Authentication Menus ---------- */
+void VotingSystem::adminAuthMenu()
+{
+    // Implementation for admin authentication menu
+    int choice = 0;
+    do
+    {
+        cout << "\n===== Admin AUTH MENU =====\n";
+        cout << "1. Login\n";
+        cout << "2. Register\n";
+        cout << "3. Back to Main Menu\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        Admin *admin = nullptr;
+        switch (choice)
+        {
+        case 1:
+        {
+            admin = new Admin(0, "", "", "", this);
+            admin->login();
+            loading("Loading admin menu");
+            adminMenu(admin);
+            break;
+        }
+        case 2:
+        {
+            admin = new Admin(0, "", "", "", this);
+            admin->registerUser();
+            loading("Loading admin menu");
+            adminMenu(admin);
+            break;
+        }
+        case 3:
+            cout << "Returning to Main Menu.\n";
+            // function to return to main menu will be added later
+            break;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 3);
+}
+
+void VotingSystem::voterAuthMenu()
+{
+    // Implementation for voter authentication menu
 }
