@@ -280,8 +280,26 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
         cout << "Title: " << target->getTitle() << endl;
         cout << "Description: " << target->getDescription() << endl;
         cout<< "Status: " << (target->isOpen() ? "OPENED" : "NOT OPENED") << endl;
-        cout <<"Vote Count: " << candidate->viewVoteCount(electionID) << endl;
-        cout << "1. View Candidates\n";
+        // total number of votes in this election, for all candidates
+        int voteCount = 0;
+        for (const Vote &v : votes)
+        {
+            if (v.getElectionId() == electionID)
+            {
+                voteCount++;
+            }
+        }
+        // number of voters all candidates
+        cout << "Number of Candidates: " << target->getCandidates().size() << endl;
+        cout <<"Number of Votes: " << voteCount << endl;
+
+        if (target->getStatus() == ElectionStatus::CLOSED)
+        {
+            int myVotes = candidate->viewVoteCount(electionID);
+            cout << "Your Votes: " << myVotes << endl;
+        }
+
+        cout << "1. View Election Candidates\n";
         cout << "2. Back to My Elections\n";
         cout << "Choice: ";
         cin >> choice;
@@ -299,7 +317,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
 }
 void VotingSystem::viewElectionCandidates(Election* election)
 {
-    cout << "\n=== Candidates in Election: " << election->getTitle() << " ===\n";
+    cout << "\n=== All Candidates in Election: " << election->getTitle() << " ===\n";
     for (int candidateId : election->getCandidates())
     {
         for (User* u : users)
