@@ -145,7 +145,7 @@ void VotingSystem::guestMenu()
     {
         cout << "\n===== GUEST MENU =====\n";
         cout << "1. View Voting Rules\n";
-        cout << "2. View Elections\n";
+        cout << "2. View All Elections\n";
         cout << "3. View All Candidates\n";
         cout << "4. Back to Main Menu\n";
         cout << "Enter your choice: ";
@@ -229,7 +229,7 @@ void VotingSystem::adminMenu(Admin *admin)
             break;
 
         case 2:
-             
+
             int electionId;
             admin->viewElections();
               cout << "Enter Election ID to get more details: ";

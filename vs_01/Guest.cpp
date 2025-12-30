@@ -58,7 +58,7 @@ void Guest::viewElections()
 
         cout << "\n===== OPTIONS =====\n";
         cout << "1. View Election Details\n";
-        cout << "2. View Election Candidates\n";
+//        cout << "2. View Election Candidates\n";
         cout << "0. Back\n";
         cout << "Enter choice: ";
         cin >> choice;
@@ -73,14 +73,14 @@ void Guest::viewElections()
             viewElectionDetails(electionId);
             break;
         }
-        case 2:
-        {
-            int electionId;
-            cout << "Enter Election ID: ";
-            cin >> electionId;
-            void viewAllCandidates();
-            break;
-        }
+//        case 2:
+//        {
+//            int electionId;
+//            cout << "Enter Election ID: ";
+//            cin >> electionId;
+//            void viewAllCandidates();
+//            break;
+//        }
         case 0:
             cout << "Returning to Guest Menu...\n";
             break;
