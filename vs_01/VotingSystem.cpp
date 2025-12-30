@@ -157,36 +157,80 @@ void VotingSystem::voterMenu(Voter* voter){
     } while (true);
 }
 
-void VotingSystem::adminMenu(Admin* admin) {
-    int choice;
+void VotingSystem::adminMenu(Admin *admin)
+{
     string adminName = admin->getUsername();
-    cout << BOLD <<"WELCOME " << adminName << "!" << RESET << endl  ;
-    do {
-    
+    cout << BOLD << "WELCOME " << adminName << "!" << RESET << endl;
+
+    int choice = -1;
+
+    while (true)
+    {
+        // Display main menu
+        cout << "\n"
+             << BOLD << "============================ Admin Menu ============================" << RESET << endl;
         cout << "1. Create Election\n";
         cout << "2. View All Elections\n";
         cout << "3. View All Voters\n";
         cout << "0. Logout\n";
         cout << "Choose: ";
+
         cin >> choice;
-        if (choice < 0 || choice > 3 || cin.fail()) {
-            cin.clear(); // clear the fail state
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
-            cout << RED << "Invalid input! Please enter a number from 0 to 3 .\n" << RESET;
-        }   
-        switch (choice) {
-            case 1: admin->createElection(); break;
-            case 2: admin->viewElections(); break;
-            case 3: admin->viewVoters(); break;
-            case 0:
-                cout << YELLOW << "Logging out...\n" << RESET;
-                admin->logout();
-                break;
-            default:
-                cout << RED << "Invalid choice!\n" << RESET;
+
+        // Input validation
+        if (cin.fail() || choice < 0 || choice > 3)
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << RED << "Invalid input! Please enter a number from 0 to 3.\n"
+                 << RESET;
+            continue; // back to menu
         }
-    } while (choice != 0);
+
+        switch (choice)
+        {
+        case 1:
+            admin->createElection();
+            break;
+
+        case 2:
+            admin->viewElections();
+            break;
+
+        case 3:
+        {
+            admin->viewVoters();
+
+            int voterId = -1;
+            cout << "Enter Voter ID to ban (or any invalid input to return): ";
+            cin >> voterId;
+
+            if (cin.fail() || voterId < 0)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                loading("Returning to menu"); // optional animation
+                break;
+            }
+
+            admin->banVoter(voterId);
+            break;
+        }
+
+        case 0:
+            cout << YELLOW << "Logging out...\n"
+                 << RESET;
+            admin->logout();
+            return; // exit menu
+
+        default:
+            cout << RED << "Invalid choice!\n"
+                 << RESET;
+            break;
+        }
+    }
 }
+
 
 /* -------- Candidate Menus --------*/
 void VotingSystem::candidateAuthMenu()

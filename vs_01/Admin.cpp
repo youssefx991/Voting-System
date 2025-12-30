@@ -179,17 +179,23 @@ void Admin::banVoter(int voterId)
         {
             if (u->getBanStatus())
             {
-                cout << "Voter already banned.\n";
+                cout << BOLD << YELLOW
+                     << "Voter is already banned.\n"
+                     << RESET;
                 return;
             }
 
             u->ban();
-            cout << "Voter banned successfully.\n";
+            cout << BOLD << GREEN 
+                 << "Voter banned successfully.\n"
+                 << RESET;
             return;
         }
     }
 
-    cout << "Voter not found.\n";
+     cout << BOLD << RED
+         << "Voter not found.\n"
+         << RESET;
 }
 
 /* ---------- Add Candidate ---------- */
