@@ -161,10 +161,9 @@ void Guest::viewCandidateDetails(int candidateId)
     if (!found)
         cout << "Candidate not found.\n";
 
-    cout << "\n0. Back\n";
-    cout << "Enter 0 to return: ";
-    int back;
-    cin >> back;
+    cout << "\nEnter anything to go back: ";
+    cin.ignore();
+    cin.get();
 }
 
 void Guest::viewAllCandidates()
