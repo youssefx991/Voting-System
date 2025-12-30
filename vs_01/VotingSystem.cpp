@@ -110,7 +110,7 @@ void VotingSystem::run() {
         switch (choice)
         {
         case 1:
-            // guestMenu(); to be implemented
+             guestMenu();
             break;
         case 2:
             candidateAuthMenu();
@@ -137,7 +137,40 @@ void VotingSystem::run() {
         }
     } while (choice != 5);
 }
-void VotingSystem::guestMenu() {}
+void VotingSystem::guestMenu()
+{
+    int choice = 0;
+
+    do
+    {
+        cout << "\n===== GUEST MENU =====\n";
+        cout << "1. View Voting Rules\n";
+        cout << "2. View Elections\n";
+        cout << "3. Back to Main Menu\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        Guest guest(this); // Guest has access to system
+
+        switch (choice)
+        {
+        case 1:
+            guest.viewVotingRules();
+            break;
+        case 2:
+            guest.viewElections();
+            break;
+        case 3:
+            cout << "Returning to Main Menu...\n";
+            break;
+
+        default:
+            cout << "Invalid choice. Try again.\n";
+        }
+
+    } while (choice != 2);
+}
+
 void VotingSystem::voterMenu(Voter* voter){
     int choice = 0;
     do
@@ -302,7 +335,7 @@ void VotingSystem::candidateElectionsMenu(Candidate* candidate)
     candidate->viewMyElections();
 
     int electionID;
-    do 
+    do
     {
         cout << "Enter Election ID to view details (or 0 to go back): ";
         cin >> electionID;
@@ -340,7 +373,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
     }
 
     int choice = 0;
-    do 
+    do
     {
         cout << "\n=== Election Details ===\n";
         cout << "Title: " << target->getTitle() << endl;
@@ -378,7 +411,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
             return;
         default:
             cout << "Invalid choice. Please try again.\n";
-        }   
+        }
     } while (true);
 }
 void VotingSystem::viewElectionCandidates(Election* election)

@@ -87,3 +87,111 @@
 1766923016 d:\iti\uml\voting system\vs_01\guest.h
 	<string>
 
+1767104162 source:d:\iti\swe & uml\project\voting-system\vs_01\guest.cpp
+	"Guest.h"
+	"VotingSystem.h"
+	"Election.h"
+	"User.h"
+	<iostream>
+
+1767102816 d:\iti\swe & uml\project\voting-system\vs_01\guest.h
+	<string>
+
+1767102861 d:\iti\swe & uml\project\voting-system\vs_01\votingsystem.h
+	<vector>
+	"Vote.h"
+	"User.h"
+	"Guest.h"
+	"Admin.h"
+	"Candidate.h"
+	"Election.h"
+
+1767102816 d:\iti\swe & uml\project\voting-system\vs_01\vote.h
+
+1767102816 d:\iti\swe & uml\project\voting-system\vs_01\user.h
+	<string>
+
+1767102816 d:\iti\swe & uml\project\voting-system\vs_01\admin.h
+	"User.h"
+
+1767102861 d:\iti\swe & uml\project\voting-system\vs_01\candidate.h
+	"User.h"
+
+1767102816 d:\iti\swe & uml\project\voting-system\vs_01\election.h
+	<string>
+	<vector>
+
+1767102816 source:d:\iti\swe & uml\project\voting-system\vs_01\main.cpp
+	<iostream>
+	<limits>
+	<windows.h>
+	<conio.h>
+	<string.h>
+	"VotingSystem.h"
+	"Guest.h"
+	"Admin.h"
+	"Candidate.h"
+	"Election.h"
+	"User.h"
+
+1767102817 source:d:\iti\swe & uml\project\voting-system\vs_01\vote.cpp
+	"Vote.h"
+
+1767102861 source:d:\iti\swe & uml\project\voting-system\vs_01\admin.cpp
+	"Admin.h"
+	"VotingSystem.h"
+	"Election.h"
+	"Candidate.h"
+	<iostream>
+	<limits>
+	"UI.h"
+
+1767102816 d:\iti\swe & uml\project\voting-system\vs_01\ui.h
+	<string>
+	<thread>
+	<chrono>
+
+1767102861 source:d:\iti\swe & uml\project\voting-system\vs_01\candidate.cpp
+	"Candidate.h"
+	"VotingSystem.h"
+	"Election.h"
+	"Vote.h"
+	<iostream>
+
+1767102817 source:d:\iti\swe & uml\project\voting-system\vs_01\test.cpp
+
+1767102816 source:d:\iti\swe & uml\project\voting-system\vs_01\ui.cpp
+	"UI.h"
+	<iostream>
+
+1767102861 source:d:\iti\swe & uml\project\voting-system\vs_01\user.cpp
+	"User.h"
+	"VotingSystem.h"
+	"Election.h"
+	<iostream>
+
+1767102861 source:d:\iti\swe & uml\project\voting-system\vs_01\voter.cpp
+	"Voter.h"
+	"VotingSystem.h"
+	"Election.h"
+	"Vote.h"
+	<iostream>
+
+1767102861 d:\iti\swe & uml\project\voting-system\vs_01\voter.h
+	"User.h"
+
+1767103861 source:d:\iti\swe & uml\project\voting-system\vs_01\votingsystem.cpp
+	"VotingSystem.h"
+	"User.h"
+	"Candidate.h"
+	"Voter.h"
+	"Admin.h"
+	"Election.h"
+	"Vote.h"
+	"UI.h"
+	<iostream>
+	<limits>
+
+1767102816 source:d:\iti\swe & uml\project\voting-system\vs_01\election.cpp
+	"Election.h"
+
