@@ -30,7 +30,7 @@ public:
 
     int getElectionId() const;
     ElectionStatus getStatus() const;
-
+    string getStatusStr() const;
     void open();
     void close();
     bool isOpen() const;
@@ -50,3 +50,4 @@ public:
 };
 
 #endif
+
