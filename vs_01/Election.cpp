@@ -20,6 +20,16 @@ ElectionStatus Election::getStatus() const
     return status;
 }
 
+string Election::getStatusStr() const
+{
+    switch (status)
+    {
+        case ElectionStatus::CREATED:   return "CREATED";
+        case ElectionStatus::OPENED:   return "OPENED";
+        case ElectionStatus::CLOSED:  return "CLOSED";
+        default:                        return "Unknown";
+    }
+}
 string Election::getTitle() const
 {
     return title;
@@ -74,3 +84,4 @@ void Election::setDescription(const string& newDescription)
 {
     description = newDescription;
 }
+
