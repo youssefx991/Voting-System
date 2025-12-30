@@ -25,6 +25,8 @@ public:
 
     void viewMyElections();
     int viewVoteCount(int electionId);
+    Candidate* getCandidateById(VotingSystem* system, int id);
 };
 
 #endif
+
