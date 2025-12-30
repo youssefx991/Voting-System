@@ -85,3 +85,14 @@ void Election::setDescription(const string& newDescription)
     description = newDescription;
 }
 
+Candidate* Candidate:: getCandidateById(VotingSystem* system, int id)
+{
+    for (User* u : system->getUsers())
+    {
+        Candidate* c = dynamic_cast<Candidate*>(u);
+        if (c && c->getUserId() == id)
+            return c;
+    }
+    return nullptr;
+}
+
