@@ -94,10 +94,46 @@ void VotingSystem::fillData()
 
 
 void VotingSystem::run() {
-    Admin* admin = new Admin(1001, "votingsysAdmin", "admin1@mail.com", "123", this);
-    // For testing, we directly call adminMenu with a dummy admin
-    loading("Loading admin menu");
-    adminMenu(admin);
+
+    int choice = 0;
+    do
+    {
+        cout << "\n===== VOTING SYSTEM MAIN MENU =====\n";
+        cout << "1. Guest\n";
+        cout << "2. Candidate\n";
+        cout << "3. Admin\n";
+        cout << "4. Voter\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            // guestMenu(); to be implemented
+            break;
+        case 2:
+            candidateAuthMenu();
+            break;
+        case 3:
+        {
+            // adminAuthMenu(); to be implemented
+            Admin* admin = new Admin(1001, "votingsysAdmin", "admin1@mail.com", "123", this);
+            // For testing, we directly call adminMenu with a dummy admin
+            loading("Loading admin menu");
+            adminMenu(admin);
+            break;
+        }
+        case 4:
+            //voterAuthMenu(); to be implemented
+            break;
+        case 5:
+            cout << "Exiting the system. Goodbye!\n";
+            break;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 5);
 }
 void VotingSystem::guestMenu() {}
 void VotingSystem::voterMenu(Voter* voter) {}
@@ -130,4 +166,156 @@ void VotingSystem::adminMenu(Admin* admin) {
                 cout << RED << "Invalid choice!\n" << RESET;
         }
     } while (choice != 0);
+}
+
+/* -------- Candidate Menus --------*/
+void VotingSystem::candidateAuthMenu()
+{
+    int choice = 0;
+    do
+    {
+        cout << "\n===== CANDIDATE AUTH MENU =====\n";
+        cout << "1. Login\n";
+        cout << "2. Register\n";
+        cout << "3. Back to Main Menu\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        Candidate *candidate = nullptr;
+        switch (choice)
+        {
+        case 1:
+        {
+            candidate = new Candidate(0, "", "", "", "", this);
+            candidate->login();
+            candidateMenu(candidate);
+            break;
+        }
+        case 2:
+        {
+            candidate = new Candidate(0, "", "", "", "", this);
+            candidate->registerUser();
+            candidateMenu(candidate);
+            break;
+        }
+        case 3:
+            cout << "Returning to Main Menu.\n";
+            // function to return to main menu will be added later
+            break;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 3);
+}
+void VotingSystem::candidateMenu(Candidate *candidate)
+{
+    int choice = 0;
+    do
+    {
+        cout << "\n=== Candidate Menu ===\n";
+        cout << "1. View My Elections\n";
+        cout << "2. Logout\n";
+        cout << "Choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            candidateElectionsMenu(candidate);
+            break;
+        case 2:
+            candidate->logout();
+            return;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (true);
+}
+void VotingSystem::candidateElectionsMenu(Candidate* candidate)
+{
+    cout << "\n=== My Elections ===\n";
+    candidate->viewMyElections();
+
+    int electionID;
+    do 
+    {
+        cout << "Enter Election ID to view details (or 0 to go back): ";
+        cin >> electionID;
+        if (electionID == 0)
+            return;
+        else
+            candidateElectionDetailsMenu(candidate, electionID);
+    } while (true);
+}
+void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electionID)
+{
+    Election* target = nullptr;
+
+    for (Election& e : elections)
+    {
+        if (e.getElectionId() == electionID)
+        {
+            for (int cid : e.getCandidates())
+            {
+                if (cid == candidate->getUserId())
+                {
+                    target = &e;
+                    break;
+                }
+            }
+            if (target != nullptr)
+                break;
+        }
+    }
+
+    if (!target)
+    {
+        cout << "Election not found.\n";
+        return;
+    }
+
+    int choice = 0;
+    do 
+    {
+        cout << "\n=== Election Details ===\n";
+        cout << "Title: " << target->getTitle() << endl;
+        cout << "Description: " << target->getDescription() << endl;
+        cout<< "Status: " << (target->isOpen() ? "OPENED" : "NOT OPENED") << endl;
+        cout <<"Vote Count: " << candidate->viewVoteCount(electionID) << endl;
+        cout << "1. View Candidates\n";
+        cout << "2. Back to My Elections\n";
+        cout << "Choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            viewElectionCandidates(target);
+            break;
+        case 2:
+            return;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }   
+    } while (true);
+}
+void VotingSystem::viewElectionCandidates(Election* election)
+{
+    cout << "\n=== Candidates in Election: " << election->getTitle() << " ===\n";
+    for (int candidateId : election->getCandidates())
+    {
+        for (User* u : users)
+        {
+            if (u->getUserId() == candidateId &&
+                u->getRole() == "Candidate")
+            {
+                cout << "- Candidate ID: " << u->getUserId()
+                     << ", Username: " << u->getUsername()
+                     << ", Email: " << u->getEmail() << endl;
+            }
+        }
+    }
+
+    cout << "Press anything to go back: ";
+    cin.ignore();
+    cin.get();
+    return;
 }

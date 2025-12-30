@@ -37,6 +37,13 @@ public:
     void guestMenu();
     void voterMenu(Voter* voter);
     void adminMenu(Admin* admin);
+
+    /* ---------- Candidate Menus ---------- */
+    void candidateAuthMenu();
+    void candidateMenu(Candidate* candidate);
+    void candidateElectionsMenu(Candidate* candidate);
+    void candidateElectionDetailsMenu(Candidate* candidate, int electionID);
+    void viewElectionCandidates(Election* election);
 };
 
 #endif
