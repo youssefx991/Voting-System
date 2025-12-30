@@ -54,7 +54,7 @@ void Candidate::viewMyElections()
 }
 
 /* ---------- View Vote Count ---------- */
-void Candidate::viewVoteCount(int electionId)
+int Candidate::viewVoteCount(int electionId)
 {
     int count = 0;
 
@@ -67,7 +67,6 @@ void Candidate::viewVoteCount(int electionId)
         }
     }
 
-    cout << "Total votes received in Election "
-         << electionId << ": " << count << endl;
+    return count;
 }
 

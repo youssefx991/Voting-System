@@ -24,7 +24,7 @@ public:
     void registerUser() override;
 
     void viewMyElections();
-    void viewVoteCount(int electionId);
+    int viewVoteCount(int electionId);
 };
 
 #endif
