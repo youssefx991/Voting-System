@@ -95,6 +95,7 @@ void Guest::viewElections()
 
 void Guest::viewElectionDetails(int electionId)
 {
+    bool found = false;
     for (const Election &e : system->getElections())
     {
         if (e.getElectionId() == electionId)
@@ -112,14 +113,16 @@ void Guest::viewElectionDetails(int electionId)
                 cout << "Closed";
 
             cout << endl;
+            found = true;
             break;
         }
     }
 
-    cout << "\n0. Back\n";
-    cout << "Enter 0 to return: ";
-    int back;
-    cin >> back;
+    if (!found)
+        cout << "Election not found with ID " << electionId << ".\n";
+    cout << "\nEnter anything to go back: ";
+    cin.ignore();
+    cin.get();
 }
 void Guest::viewCandidateDetails(int candidateId)
 {
