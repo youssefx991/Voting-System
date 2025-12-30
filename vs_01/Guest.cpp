@@ -113,6 +113,9 @@ void Guest::viewElectionDetails(int electionId)
                 cout << "Closed";
 
             cout << endl;
+
+            cout << "Candidates Participating:\n";
+            system->viewElectionCandidates(const_cast<Election*>(&e));
             found = true;
             break;
         }
