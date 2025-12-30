@@ -270,3 +270,83 @@ void Admin::removeCandidate(int electionId, int candidateId)
     targetElection->removeCandidate(candidateId);
     cout << "Candidate removed successfully.\n";
 }
+
+
+
+  void Admin::getElection(Election &election ){
+        cout<<"============election details============="<<endl;
+       cout << "ID: " << election.getElectionId()<<endl
+                 << "  Title: " << election.getTitle()<<endl
+                 << "  Status: ";
+         switch (election.getStatus())
+        {
+            case ElectionStatus::CREATED: cout << "Created"; break;
+            case ElectionStatus::OPENED:  cout << "Opened"; break;
+            case ElectionStatus::CLOSED:  cout << "Closed"; break;
+        }
+        cout << endl;
+
+        cout << "Enter Election number of operation (or any invalid input to return): "<<endl;
+            election.isOpen()?cout<<"1. close ":cout<<"1. open";
+            cout<<endl
+                <<"2. Update election"<<endl
+                <<"3. View Results"<<endl
+                <<"4.Add candidate"<<endl
+                <<"5.Remove candidate"<<endl;
+        int option ;
+        cin>>option;
+        switch(option){
+        case 1:
+            (election.isOpen())?election.close():election.open();
+            break;
+        case 2:
+            updateElection(election.getElectionId());
+            break;
+        case 3:
+            //viewResults(election.getElectionId());
+            break;
+        case 4:{
+            int cand;
+            /// view all candidate
+            int i=1;
+            for(int cId: election.getCandidates()){
+                cout<< "======================="<<endl;
+                cout<<"               candidate num: "<< i<<"#                 "<<endl;
+
+                Candidate *c= c->getCandidateById(Admin::system,cId);
+
+                cout<<" Candidate ID:"<<c->getUserId()<<endl
+                <<" Candidate username:"<<c->getUsername()<<endl
+                <<" Candidate Email:"<<c->getEmail()<<endl;
+                i++;
+            }
+            cout<< "enter candidate id to add :"<<endl;
+            cin>>cand;
+
+            addCandidate(election.getElectionId(), cand);
+            break;
+        }
+        case 5:{
+            int candi;
+            int i=1;
+              for(int cId: election.getCandidates()){
+                cout<< "======================="<<endl;
+                cout<<"               candidate num: "<< i<<"#                 "<<endl;
+
+                Candidate *c= c->getCandidateById(Admin::system,cId);
+
+                cout<<" Candidate ID:"<<c->getUserId()<<endl
+                <<" Candidate username:"<<c->getUsername()<<endl
+                <<" Candidate Email:"<<c->getEmail()<<endl;
+                i++;
+            }
+            cout<< "enter candidate id to remove"<<endl;
+            cin>>candi;
+            removeCandidate(election.getElectionId(), candi);
+            break;
+
+        }
+        default:
+            cout<< "wrong input "<<endl;
+        }
+    }
