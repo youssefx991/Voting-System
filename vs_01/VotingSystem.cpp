@@ -229,7 +229,18 @@ void VotingSystem::adminMenu(Admin *admin)
             break;
 
         case 2:
+             
+            int electionId;
             admin->viewElections();
+              cout << "Enter Election ID to get more details: ";
+              cin >> electionId;
+              for (Election& e : elections)
+                {
+                    if(e.getElectionId()==electionId){
+                       admin-> getElection(e);
+                    }
+
+                }
             break;
 
         case 3:
@@ -524,3 +535,4 @@ void VotingSystem::voterAuthMenu()
         }
     } while (choice != 3);
 }
+
