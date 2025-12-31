@@ -110,7 +110,7 @@ void VotingSystem::run()
 
     do
     {
-        system("cls");
+       // system("cls");
         drawVotingMenu(current);
         input = _getch();
 
@@ -159,7 +159,7 @@ void VotingSystem::guestMenu()
 
     while (true)
     {
-        system("cls");
+
         drawGuestMenu(current);
         input = _getch();
 
@@ -177,6 +177,7 @@ void VotingSystem::guestMenu()
             break;
 
         case 13: // ENTER
+            blinkSelection(9 + current * 2,3,1);
             system("cls");
 
             switch (current)

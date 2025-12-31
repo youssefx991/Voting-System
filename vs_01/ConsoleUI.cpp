@@ -33,24 +33,38 @@ void drawVotingMenu(int current)
         gotoxy(57, 9 + i * 2);
 
         if (i == current)
-            cout << "\033[47;30m> " <<menu[i] << " <\033[0m"<<RESET;
+            cout << "\033[47;30m> " <<menu[i] << " <\033[0m";
         else
-            cout << "  " << menu[i];
+            cout << "  " << menu[i]<<"  ";
     }
 }
 
 
 
-void blinkSelection(int y, int numOfBlinks)
+void blinkSelection(int y, int numOfBlinks, int numOFmenu)
 {
+    int x;
+    if(numOFmenu==0)x=57;
+
+    else
+        if (numOFmenu==1)x=50;
+
+    string message ="\033[42;30m    SELECTED     \033[0m";
+    string space ="                  ";
+
+    if(numOFmenu==1)
+    {
+        message ="\033[42;30m       SELECTED         \033[0m";
+        space ="                         ";
+    }
     for (int i = 0; i < numOfBlinks; i++)
     {
-        gotoxy(57, y);
-        cout << "\033[42;30m    SELECTED     \033[0m";
+        gotoxy(x, y);
+        cout <<message ;
         Sleep(150);
 
-        gotoxy(57, y);
-        cout << "                     ";
+        gotoxy(x, y);
+        cout << space;
         Sleep(150);
     }
 }
@@ -74,7 +88,7 @@ void drawGuestMenu(int current)
         if (i == current)
             cout << "\033[47;30m> " << menu[i] << " <\033[0m";
         else
-            cout << "  " << menu[i];
+            cout << "  " << menu[i]<<"  ";
     }
 }
 

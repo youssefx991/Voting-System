@@ -390,7 +390,7 @@
 1767163322 d:\iti\uml\voting system\us\voting-system\vs_01\voter.h
 	"User.h"
 
-1767168065 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
+1767169568 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
 	"VotingSystem.h"
 	"User.h"
 	"Candidate.h"
@@ -406,7 +406,7 @@
 	<windows.h>
 	<conio.h>
 
-1767168051 source:d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.cpp
+1767169541 source:d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.cpp
 	"ConsoleUI.h"
 	"UI.h"
 	<iostream>
@@ -415,6 +415,6 @@
 	<conio.h>
 	<string.h>
 
-1767168270 d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.h
+1767169389 d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.h
 	<windows.h>
 

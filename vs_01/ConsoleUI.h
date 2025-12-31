@@ -8,7 +8,7 @@ void gotoxy(int x, int y);
 
 void drawVotingMenu(int current);
 
-void blinkSelection(int y, int numOfBlinks);
+void blinkSelection(int y, int numOfBlinks, int numOFmenu=0);
 
 
 void drawGuestMenu(int current);
