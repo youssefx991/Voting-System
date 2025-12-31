@@ -229,39 +229,47 @@ void VotingSystem::adminMenu(Admin *admin)
             break;
 
         case 2:
-
+            {
             int electionId;
             admin->viewElections();
-              cout << "Enter Election ID to get more details: ";
-              cin >> electionId;
-              for (Election& e : elections)
-                {
-                    if(e.getElectionId()==electionId){
-                       admin-> getElection(e);
-                    }
-
-                }
-            break;
-
-        case 3:
-        {
-            admin->viewVoters();
-
-            int voterId = -1;
-            cout << "Enter Voter ID to ban (or any invalid input to return): ";
-            cin >> voterId;
-
-            if (cin.fail() || voterId < 0)
+            cout << "Enter Election ID to get more details: ";
+            cin >> electionId;
+            bool found = false;
+            for (Election &e : elections)
             {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                loading("Returning to menu"); // optional animation
+                if (e.getElectionId() == electionId)
+                {
+                    admin->getElection(e);
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                cout << RED << "Election ID not found!\n"
+                     << RESET;
                 break;
             }
-
-            admin->banVoter(voterId);
             break;
         }
+            case 3:
+            {
+                admin->viewVoters();
+
+                int voterId = -1;
+                cout << "Enter Voter ID to ban (or any invalid input to return): ";
+                cin >> voterId;
+
+                if (cin.fail() || voterId < 0)
+                {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    loading("Returning to menu"); // optional animation
+                    break;
+                }
+
+                admin->banVoter(voterId);
+                break;
+            }
 
         case 0:
             cout << YELLOW << "Logging out...\n"
@@ -444,10 +452,6 @@ void VotingSystem::viewElectionCandidates(Election* election)
             }
         }
     }
-
-    cout << "Press anything to go back: ";
-    cin.ignore();
-    cin.get();
     return;
 }
 
