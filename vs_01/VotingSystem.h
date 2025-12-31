@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 #include "Vote.h"
 #include "User.h"
@@ -51,7 +52,7 @@ public:
     void voterAuthMenu();
 
     /* ---------- Election Result ---------- */
-    std::unordered_map<int, int> displayElectionResults(int electionId);
+    void displayElectionResults(int electionId);
 
 };
 

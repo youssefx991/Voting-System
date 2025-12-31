@@ -211,13 +211,21 @@ void VotingSystem::voterMenu(Voter* voter){
     int choice = 0;
     do
     {
-        cout << "\n=== Voter Menu ===\n";
-        cout << "1. Logout\n";
+        cout << "1. View Rules\n";
+        cout << "2. View All Elections\n";
+        cout << "0. Logout\n";
         cout << "Choice: ";
         cin >> choice;
+        if (choice < 0 || choice > 2 || cin.fail()) {
+            cin.clear(); // clear the fail state
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+            cout << RED << "Invalid input! Please enter a number from 0 to 2 .\n" << RESET;
+        }
         switch (choice)
         {
-        case 1:
+        case 1: voter->rulesMenu(); break;
+        case 2: voter->availableElectionsMenu(); break;
+        case 0:
             voter->logout();
             return;
         default:
@@ -568,7 +576,7 @@ void VotingSystem::voterAuthMenu()
 }
 
 /* ---------- Election Result ---------- */
-std::unordered_map<int, int> VotingSystem::displayElectionResults(int electionId)
+void VotingSystem::displayElectionResults(int electionId)
 {
     std::unordered_map<int, int> results; // candidateId -> voteCount
 
@@ -594,25 +602,31 @@ std::unordered_map<int, int> VotingSystem::displayElectionResults(int electionId
         }
     }
 
-    // Display results
+    vector<pair<int, int>> sortedResults(results.begin(), results.end());
+
+    // Sort candidates by vote count in descending order
+    sort(sortedResults.begin(), sortedResults.end(),
+         [](const pair<int, int>& a, const pair<int, int>& b)
+         {
+             return b.second < a.second; // descending order
+         });
+    results.clear();
+
     cout << "\n=== Election Results for Election ID: " << electionId << " ===\n";
-    for (const auto& entry : results)
+    for (const auto& entry : sortedResults)
     {
-        // display candidate id and name nad vote count
         for (User* u : users)
         {
             if (u->getUserId() == entry.first &&
                 u->getRole() == "Candidate")
             {
-                cout << "- Candidate ID: " << u->getUserId()
+                cout << "- Candidate ID: " << entry.first
                      << ", Username: " << u->getUsername()
                      << ", Votes: " << entry.second << endl;
                 break;
             }
         }
     }
-
-    return results;
 }
 
 

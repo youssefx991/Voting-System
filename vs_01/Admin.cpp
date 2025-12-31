@@ -307,6 +307,7 @@ void Admin::removeCandidate(int electionId, int candidateId)
             break;
         case 3:
         {
+            cout << "Election Results:\n";
             system->displayElectionResults(election.getElectionId());
             cout << "Press anything to go back: ";
             cin.ignore();

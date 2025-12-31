@@ -140,6 +140,12 @@ void Guest::viewElectionDetails(int electionId)
                 cout << "Closed";
 
             system->viewElectionCandidates(const_cast<Election*>(&e));
+
+            if (e.getStatus() == ElectionStatus::CLOSED)
+            {
+                cout << "Election Results:";
+                system->displayElectionResults(electionId);
+            }
             found = true;
             break;
         }
