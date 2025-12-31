@@ -47,77 +47,91 @@ void Guest::viewVotingRules() {
 
 void Guest::viewElections()
 {
-    int choice = -1;
+    auto &elections = system->getElections();
+    int totalOptions = elections.size() + 1; // All elections + "Back"
+    int current = 0;
+    char input;
 
-    do
+    while (true)
     {
-        cout << "\n===== AVAILABLE ELECTIONS =====\n";
+        ::system("cls");
+        gotoxy(45, 7);
+        cout << "===== AVAILABLE ELECTIONS =====";
 
-        for (const Election &e : system->getElections())
+        // Draw elections
+        for (int i = 0; i < elections.size(); i++)
         {
-            cout << "ID: " << e.getElectionId()
-                 << " | Title: " << e.getTitle()
-                 << " | Status: ";
-
-            if (e.getStatus() == ElectionStatus::CREATED)
-                cout << "Created";
-            else if (e.getStatus() == ElectionStatus::OPENED)
-                cout << "Opened";
+            gotoxy(45, 9 + i * 2);
+            if (current == i)
+                cout << "\033[47;30m> ID: " << elections[i].getElectionId()
+                     << " | " << elections[i].getTitle() << " <\033[0m";
             else
-                cout << "Closed";
-
-            cout << endl;
+                cout << "  ID: " << elections[i].getElectionId()
+                     << " | " << elections[i].getTitle();
         }
 
-        cout << "\n===== OPTIONS =====\n";
-        cout << "1. View Election Details\n";
-//        cout << "2. View Election Candidates\n";
-        cout << "0. Back\n";
-        cout << "Enter choice: ";
-        cin >> choice;
+        // Draw "Back" option
+        gotoxy(45, 9 + elections.size() * 2);
+        if (current == totalOptions - 1)
+            cout << "\033[47;30m>    Back     <\033[0m";
+        else
+            cout << "   Back   ";
 
-        switch (choice)
+        // Get user input
+        input = _getch();
+        if (input == -32) input = _getch(); // arrow keys
+
+        switch (input)
         {
-        case 1:
-        {
-            int electionId;
-            cout << "Enter Election ID: ";
-            cin >> electionId;
-            viewElectionDetails(electionId);
+        case 72: // UP
+            if (current > 0) current--;
             break;
-        }
-//        case 2:
-//        {
-//            int electionId;
-//            cout << "Enter Election ID: ";
-//            cin >> electionId;
-//            void viewAllCandidates();
-//            break;
-//        }
-        case 0:
-            cout << "Returning to Guest Menu...\n";
+        case 80: // DOWN
+            if (current < totalOptions - 1) current++;
             break;
-
-        default:
-            cout << "Invalid choice. Try again.\n";
+        case 13: // ENTER
+            if (current == totalOptions - 1) // Back
+            {
+                return;
+            }
+            else // An election selected
+            {
+                int electionId = elections[current].getElectionId();
+                viewElectionDetails(electionId);
+                cout << "\nPress any key to continue...";
+                _getch();
+            }
+            break;
+        case 27: // ESC
+            return;
         }
 
-    } while (choice != 0);
+        Sleep(80); // smooth hover effect
+    }
 }
 
 
 void Guest::viewElectionDetails(int electionId)
 {
+    ::system("cls");
     bool found = false;
+    int y = 7; // starting row
+
     for (const Election &e : system->getElections())
     {
         if (e.getElectionId() == electionId)
         {
-            cout << "\n===== Election Details =====\n";
-            cout << "Title: " << e.getTitle() << endl;
-            cout << "Description: " << e.getDescription() << endl;
-            cout << "Status: ";
+            gotoxy(45, y++);
+            cout << "===== Election Details =====";
 
+            gotoxy(45, y++);
+            cout << "Title: " << e.getTitle();
+
+            gotoxy(45, y++);
+            cout << "Description: " << e.getDescription();
+
+            gotoxy(45, y++);
+            cout << "Status: ";
             if (e.getStatus() == ElectionStatus::CREATED)
                 cout << "Created";
             else if (e.getStatus() == ElectionStatus::OPENED)
@@ -125,9 +139,6 @@ void Guest::viewElectionDetails(int electionId)
             else
                 cout << "Closed";
 
-            cout << endl;
-
-            cout << "Candidates Participating:\n";
             system->viewElectionCandidates(const_cast<Election*>(&e));
             found = true;
             break;
@@ -135,11 +146,17 @@ void Guest::viewElectionDetails(int electionId)
     }
 
     if (!found)
-        cout << "Election not found with ID " << electionId << ".\n";
-    cout << "\nEnter anything to go back: ";
-    cin.ignore();
-    cin.get();
+    {
+        gotoxy(45, y++);
+        cout << "Election not found with ID " << electionId << ".";
+    }
+
+    cout << "Press any key to go back...";
+    _getch();
 }
+
+
+
 void Guest::viewCandidateDetails(int candidateId)
 {
     bool found = false;
@@ -178,32 +195,84 @@ void Guest::viewCandidateDetails(int candidateId)
         cout << "Candidate not found.\n";
 
     cout << "\nEnter anything to go back: ";
+
     cin.ignore();
     cin.get();
+     ::system("cls");
 }
 
 void Guest::viewAllCandidates()
 {
-    cout << "\n===== ALL CANDIDATES =====\n";
 
+    auto &users = system->getUsers();
 
-    for (User* u : system->getUsers())
-    {
+    // Filter candidates
+    std::vector<User*> candidates;
+    for (User* u : users)
         if (u->getRole() == "Candidate")
-        {
-            cout << "- ID: " << u->getUserId()
-                 << " | Username: " << u->getUsername()
-                 << " | Email: " << u->getEmail() << endl;
-        }
-    }
+            candidates.push_back(u);
 
+    int totalOptions = candidates.size() + 1; // all candidates + "Back"
+    int current = 0;
+    char input;
 
-    int choice = -1;
-    do
+    while (true)
     {
-        cout << "\nEnter Candidate ID to view details (0 to go back): ";
-        cin >> choice;
-        if (choice != 0)
-            viewCandidateDetails(choice);
-    } while (choice != 0);
+        //::system("cls");
+        int y = 7;
+        gotoxy(45, y); y += 2;
+        cout << "===== ALL CANDIDATES =====";
+
+        // Display candidates
+        for (int i = 0; i < candidates.size(); i++)
+        {
+            gotoxy(35, y); y += 2;
+
+            if (current == i)
+                cout << "\033[47;30m> "
+                     << "ID: " << candidates[i]->getUserId()
+                     << " | Username: " << candidates[i]->getUsername()
+                     << " | Email: " << candidates[i]->getEmail()
+                     << " <\033[0m";
+            else
+                cout << "  ID: " << candidates[i]->getUserId()
+                     << " | Username: " << candidates[i]->getUsername()
+                     << " | Email: " << candidates[i]->getEmail()<<"  ";
+
+            gotoxy(45, y); y += 2;
+            cout << "==============================";
+        }
+
+        // Display "Back" option
+        gotoxy(55, y); y += 2;
+        if (current == totalOptions - 1)
+            cout << "\033[47;30m> Back <\033[0m";
+        else
+            cout << "  Back   ";
+
+        // Get input
+        input = _getch();
+        if (input == -32) input = _getch(); // arrow keys
+
+        switch (input)
+        {
+        case 72: // UP
+            if (current > 0) current--;
+            break;
+        case 80: // DOWN
+            if (current < totalOptions - 1) current++;
+            break;
+        case 13: // ENTER
+            if (current == totalOptions - 1) // Back
+                return;
+            else // Candidate selected
+                viewCandidateDetails(candidates[current]->getUserId());
+            break;
+        case 27: // ESC
+            return;
+        }
+
+        Sleep(80); // smooth highlight effect
+    }
 }
+

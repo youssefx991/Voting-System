@@ -472,7 +472,8 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
 }
 void VotingSystem::viewElectionCandidates(Election* election)
 {
-    cout << "\n=== All Candidates in Election: " << election->getTitle() << " ===\n";
+
+    cout << "\n \n === All Candidates in Election: " << election->getTitle() << " ===\n";
     for (int candidateId : election->getCandidates())
     {
         for (User* u : users)
