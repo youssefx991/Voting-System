@@ -96,6 +96,10 @@ void VotingSystem::fillData()
     votes.emplace_back(3, 2, 3, 103);
     votes.emplace_back(4, 2, 4, 104);
     votes.emplace_back(5, 2, 5, 105);
+    votes.emplace_back(6, 2, 4, 104);
+    votes.emplace_back(7, 2, 4, 104);
+    votes.emplace_back(8, 2, 4, 104);
+
 }
 
 
@@ -433,7 +437,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
         cout << "\n=== Election Details ===\n";
         cout << "Title: " << target->getTitle() << endl;
         cout << "Description: " << target->getDescription() << endl;
-        cout<< "Status: " << (target->isOpen() ? "OPENED" : "NOT OPENED") << endl;
+        cout<< "Status: " << (target->isOpen() ? "OPENED" : "Closed") << endl;
         // total number of votes in this election, for all candidates
         int voteCount = 0;
         for (const Vote &v : votes)
@@ -451,6 +455,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
         {
             int myVotes = candidate->viewVoteCount(electionID);
             cout << "Your Votes: " << myVotes << endl;
+            cout << "Election Results:\n";
             displayElectionResults(electionID);
         }
 
@@ -604,7 +609,7 @@ void VotingSystem::displayElectionResults(int electionId)
          });
     results.clear();
 
-    cout << "\n=== Election Results for Election ID: " << electionId << " ===\n";
+    cout << "\n\n";
     for (const auto& entry : sortedResults)
     {
         for (User* u : users)
