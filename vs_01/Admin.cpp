@@ -64,15 +64,18 @@ void Admin::updateElection(int electionId)
     {
         if (e.getElectionId() == electionId)
         {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             string newTitle, newDescription;
 
             cout << "Current title: " << e.getTitle() << endl;
             cout << "Enter new title (or press Enter to keep current): ";
             getline(cin, newTitle);
+            
 
             if (!newTitle.empty())
                 e.setTitle(newTitle);
 
+            
             cout << "Current description: " << e.getDescription() << endl;
             cout << "Enter new description (or press Enter to keep current): ";
             getline(cin, newDescription);
@@ -274,7 +277,7 @@ void Admin::removeCandidate(int electionId, int candidateId)
 
 
   void Admin::getElection(Election &election ){
-        cout<<"============election details============="<<endl;
+        cout<<"============ Election Details ============="<<endl;
        cout << "ID: " << election.getElectionId()<<endl
                  << "  Title: " << election.getTitle()<<endl
                  << "  Status: ";
@@ -286,13 +289,13 @@ void Admin::removeCandidate(int electionId, int candidateId)
         }
         cout << endl;
 
-        cout << "Enter Election number of operation (or any invalid input to return): "<<endl;
-            election.isOpen()?cout<<"1. close ":cout<<"1. open";
-            cout<<endl
-                <<"2. Update election"<<endl
-                <<"3. View Results"<<endl
-                <<"4.Add candidate"<<endl
-                <<"5.Remove candidate"<<endl;
+        election.isOpen()?cout<<"1. close ":cout<<"1. open";
+        cout<<endl
+        <<"2. Update election"<<endl
+        <<"3. View Results"<<endl
+        <<"4. Add candidate"<<endl
+        <<"5. Remove candidate"<<endl;
+        cout << "Enter Election number of operation (or any invalid input to return): ";
         int option ;
         cin>>option;
         switch(option){
@@ -303,8 +306,13 @@ void Admin::removeCandidate(int electionId, int candidateId)
             updateElection(election.getElectionId());
             break;
         case 3:
-            //viewResults(election.getElectionId());
+        {
+            system->displayElectionResults(election.getElectionId());
+            cout << "Press anything to go back: ";
+            cin.ignore();
+            cin.get();
             break;
+        }
         case 4:{
             int cand;
             /// view all candidate
