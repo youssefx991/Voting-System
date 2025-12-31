@@ -99,30 +99,17 @@ void Voter::viewVotingStatus()
 
 void Voter::rulesMenu()
 {
-    int choice;
-    do {
-        cout << "1.Rule number 1\n";
-        cout << "2. Rule number 2\n";
-        cout << "3. Rule number 3\n";
+    cout << BOLD  << "================ VOTING RULES ================\n" << RESET;
 
-        cout << "Back: press 0: ";
-        cin >> choice;
-        if (choice != 0|| cin.fail()) {
-            cin.clear(); // clear the fail state
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
-            cout << RED << "Invalid input! Please enter a number from 0 to 3 .\n" << RESET;
-        }
-        switch (choice) {
-            case 0:
-                cout << YELLOW << "Return...\n" << RESET;
-                return;
-                break;
-            default:
-                cout << RED << "Invalid choice!\n" << RESET;
-        }
-    } while (choice != 0);
-
-    return;
+    cout << BOLD << GREEN << "1. Each voter can vote only once per election.\n" << RESET;
+    cout << BOLD  << GREEN << "2. Voting is allowed only when the election " << BOLD << "OPEN" << RESET << GREEN << ".\n" << RESET;
+    cout << BOLD  << GREEN << "3. Votes cannot be changed after submission.\n" << RESET;
+    cout << BOLD  << GREEN << "4. Banned users are not allowed to vote.\n" << RESET;
+    cout << BOLD  << GREEN << "5. Candidates cannot vote in elections they participate in.\n" << RESET; 
+    cout << BOLD << YELLOW << "Press any key to go back to Guest Menu\n" << RESET;
+    cout << BOLD  << "=============================================\n" << RESET;
+    cin.ignore();
+    cin.get();
 }
 
 
@@ -141,6 +128,12 @@ void Voter::availableElectionsMenu()
                 cout << "Id: " << e.getElectionId() << endl;
                 cout << "title: " << e.getTitle() << endl;
                 e.isOpen()? cout<< "open for voting"<<endl : cout<< "closed"<<endl;
+
+                if (e.getStatus() == ElectionStatus::CLOSED)
+                {
+                    cout << "Election Results:";
+                    system->displayElectionResults(e.getElectionId());
+                }
                 cout<< "------------------------------"<<endl;
         }
         cout << "choose Election ID: ";
