@@ -304,9 +304,10 @@
 	"User.h"
 	"ConsoleUI.h"
 
-1767163322 d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.h
+1767199016 d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.h
 	<vector>
 	<unordered_map>
+	<algorithm>
 	"Vote.h"
 	"User.h"
 	"Guest.h"
@@ -332,7 +333,7 @@
 	<string>
 	<vector>
 
-1767163322 source:d:\iti\uml\voting system\us\voting-system\vs_01\admin.cpp
+1767199016 source:d:\iti\uml\voting system\us\voting-system\vs_01\admin.cpp
 	"Admin.h"
 	"VotingSystem.h"
 	"Election.h"
@@ -358,7 +359,7 @@
 	"Candidate.h"
 	"VotingSystem.h"
 
-1767179795 source:d:\iti\uml\voting system\us\voting-system\vs_01\guest.cpp
+1767199016 source:d:\iti\uml\voting system\us\voting-system\vs_01\guest.cpp
 	"Guest.h"
 	"VotingSystem.h"
 	"Election.h"
@@ -379,26 +380,30 @@
 	"UI.h"
 	<iostream>
 
-1767163322 source:d:\iti\uml\voting system\us\voting-system\vs_01\user.cpp
+1767200934 source:d:\iti\uml\voting system\us\voting-system\vs_01\user.cpp
 	"User.h"
 	"VotingSystem.h"
 	"Election.h"
+	"ConsoleUI.h"
+	"UI.h"
 	<iostream>
 
 1767163322 source:d:\iti\uml\voting system\us\voting-system\vs_01\vote.cpp
 	"Vote.h"
 
-1767163322 source:d:\iti\uml\voting system\us\voting-system\vs_01\voter.cpp
+1767199016 source:d:\iti\uml\voting system\us\voting-system\vs_01\voter.cpp
 	"Voter.h"
 	"VotingSystem.h"
 	"Election.h"
 	"Vote.h"
+	"UI.h"
 	<iostream>
+	<limits>
 
-1767163322 d:\iti\uml\voting system\us\voting-system\vs_01\voter.h
+1767199016 d:\iti\uml\voting system\us\voting-system\vs_01\voter.h
 	"User.h"
 
-1767174160 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
+1767199983 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
 	"VotingSystem.h"
 	"User.h"
 	"Candidate.h"
@@ -414,7 +419,7 @@
 	<windows.h>
 	<conio.h>
 
-1767169970 source:d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.cpp
+1767201200 source:d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.cpp
 	"ConsoleUI.h"
 	"UI.h"
 	<iostream>
@@ -423,6 +428,8 @@
 	<conio.h>
 	<string.h>
 
-1767169389 d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.h
+1767200731 d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.h
 	<windows.h>
+	<string.h>
+	<iostream>
 

@@ -1,7 +1,8 @@
 #include "User.h"
 #include "VotingSystem.h"
 #include "Election.h"
-
+#include "ConsoleUI.h"
+#include "UI.h"
 #include <iostream>
 
 using namespace std;
@@ -70,24 +71,33 @@ void User::viewElections()
 void User::login()
 {
     bool validInput = false;
-    string inputUsername, inputPassword;
-
     do
     {
-        cout << "Enter username: ";
-        cin >> inputUsername;
+        int centerX = 45;
+        int startY = 7;
 
-        cout << "Enter password: ";
-        cin >> inputPassword;
+        gotoxy(centerX, startY);
+        cout << BOLD << "=========== LOGIN ===========" << RESET;
+
+        gotoxy(centerX, startY + 3);
+        cout << "Username:";
+
+        gotoxy(centerX, startY + 5);
+        cout << "Password:";
+
+        string username = inputField(centerX + 12, startY + 3, 20, false);
+        string password = inputField(centerX + 12, startY + 5, 20, true);
+
 
         for (User* user : system->getUsers())
         {
-            if (user->getUsername() == inputUsername &&
-                user->getPassword() == inputPassword)
+            if (user->getUsername() == username &&
+                user->getPassword() == password)
             {
                 userId = user->getUserId();
-                username = inputUsername;
-                password = inputPassword;
+                username = username;
+                password = password;
+                gotoxy(55,20);
                 cout << "Login successful!" << endl;
                 validInput = true;
                 break;
@@ -96,11 +106,15 @@ void User::login()
 
         if (!validInput)
         {
+            gotoxy(40,20);
             cout << "Invalid username or password. Please try again." << endl;
         }
 
     } while (!validInput);
 }
+
+
+
 
 void User::registerUser()
 {
@@ -153,7 +167,7 @@ void User::registerUser()
     username = inputUsername;
     email = inputEmail;
     password = inputPassword;
-    
+
     // generate userId -- must be unique
     int maxId = 0;
     for (User *user : system->getUsers())

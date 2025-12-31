@@ -331,44 +331,69 @@ void VotingSystem::adminMenu(Admin *admin)
 /* -------- Candidate Menus --------*/
 void VotingSystem::candidateAuthMenu()
 {
-    int choice = 0;
-    do
-    {
-        cout << "\n===== CANDIDATE AUTH MENU =====\n";
-        cout << "1. Login\n";
-        cout << "2. Register\n";
-        cout << "3. Back to Main Menu\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    int current = 0;
+    char input;
 
-        Candidate *candidate = nullptr;
-        switch (choice)
+    while (true)
+    {
+        drawCandidateAuthMenu(current);
+        input = _getch();
+
+        if (input == -32)
+            input = _getch(); // arrow keys
+
+        switch (input)
         {
-        case 1:
+        case 72: // UP
+            if (current > 0) current--;
+            break;
+
+        case 80: // DOWN
+            if (current < 2) current++;
+            break;
+
+        case 13: // ENTER
         {
-            candidate = new Candidate(0, "", "", "", "", this);
-            candidate->login();
-            loading("Loading candidate menu");
-            candidateMenu(candidate);
+            blinkSelection(9 + current * 2, 3, 1);
+            system("cls");
+
+            Candidate* candidate = new Candidate(0, "", "", "", "", this);
+
+            switch (current)
+            {
+            case 0:
+                candidate->login();
+                loading("Loading candidate menu");
+                candidateMenu(candidate);
+                break;
+
+            case 1: // Register
+                candidate->registerUser();
+                loading("Loading candidate menu");
+                candidateMenu(candidate);
+                break;
+
+            case 2: // Back
+                delete candidate;
+                system("cls");
+                return;
+            }
+
+            cout << "\nPress any key to continue...";
+            _getch();
+            system("cls");
             break;
         }
-        case 2:
-        {
-            candidate = new Candidate(0, "", "", "", "", this);
-            candidate->registerUser();
-            loading("Loading candidate menu");
-            candidateMenu(candidate);
-            break;
+
+        case 27: // ESC
+            system("cls");
+            return;
         }
-        case 3:
-            cout << "Returning to Main Menu.\n";
-            // function to return to main menu will be added later
-            break;
-        default:
-            cout << "Invalid choice. Please try again.\n";
-        }
-    } while (choice != 3);
+
+        Sleep(80);
+    }
 }
+
 void VotingSystem::candidateMenu(Candidate *candidate)
 {
     int choice = 0;

@@ -93,3 +93,111 @@ void drawGuestMenu(int current)
 }
 
 
+void drawCandidateAuthMenu(int current)
+{
+    int y = 7;
+
+    gotoxy(45, y); y += 2;
+    cout << "===== CANDIDATE AUTH MENU =====";
+
+    const char* options[] =
+    {
+        "Login",
+        "Register",
+        "Back "
+    };
+
+    for (int i = 0; i < 3; i++)
+    {
+        gotoxy(55, y); y += 2;
+
+        if (current == i)
+            cout << "\033[47;30m> " << options[i] << " <\033[0m";
+        else
+            cout << "  " << options[i]<< "  ";
+    }
+
+    gotoxy(45, y + 1);
+    cout << "==============================";
+}
+
+static void drawBox(int x, int y, int width)
+{
+    gotoxy(x, y);
+    cout << "\033[47;30m";
+    for (int i = 0; i < width; i++) cout << " ";
+    cout << "\033[0m";
+}
+
+string inputField(int x, int y, int maxLen, bool isPassword)
+{
+    string text;
+    int current = 0;
+
+    drawBox(x, y, maxLen + 1);
+
+    while (true)
+    {
+        gotoxy(x + current, y);
+        char key = _getch();
+
+        // extended key
+        if (key == -32)
+        {
+            key = _getch();
+            switch (key)
+            {
+            case 75: if (current > 0) current--; break;      // left
+            case 77: if (current < (int)text.size()) current++; break; // right
+            case 71: current = 0; break;                     // home
+            case 79: current = text.size(); break;           // end
+            case 83:                                         // delete
+                if (current < (int)text.size())
+                    text.erase(current, 1);
+                break;
+            }
+        }
+        else
+        {
+            switch (key)
+            {
+            case 8: // backspace
+                if (current > 0)
+                {
+                    current--;
+                    text.erase(current, 1);
+                }
+                break;
+
+            case 13: // enter
+                return text;
+
+            case 27: // esc
+                return "";
+
+            default:
+                if ((int)text.size() < maxLen && key >= 32)
+                {
+                    text.insert(text.begin() + current, key);
+                    current++;
+                }
+            }
+        }
+
+      drawBox(x, y, maxLen + 1);
+      gotoxy(x, y);
+
+        cout << "\033[47;30m";   // white bg, black text
+
+        for (int i = 0; i < (int)text.size(); i++)
+        {
+            if (isPassword)
+                cout << "*";
+            else
+                cout << text[i];
+        }
+
+        cout << "\033[0m";
+    }
+}
+
