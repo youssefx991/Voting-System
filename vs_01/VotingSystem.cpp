@@ -13,6 +13,7 @@
 #include <limits>
 #include <unordered_map>
 #include<windows.h>
+#include <conio.h>
 
 using namespace std;
 
@@ -98,87 +99,113 @@ void VotingSystem::fillData()
 }
 
 
+void drawVotingMenu(int current);
+void blinkSelection(int y);
 
 
-void VotingSystem::run() {
+void VotingSystem::run()
+{
+    int current = 0;
+    char input;
 
-    int choice = 0;
     do
     {
-        gotoxy(45,7);
-        cout << "===== VOTING SYSTEM MAIN MENU =====\n";
-        cout << "1. Guest\n";
-        cout << "2. Candidate\n";
-        cout << "3. Admin\n";
-        cout << "4. Voter\n";
-        cout << "5. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+        system("cls");
+        drawVotingMenu(current);
+        input = _getch();
 
-        switch (choice)
+        // Handle extended keys
+        if (input == -32)
+            input = _getch();
+
+        switch (input)
         {
-        case 1:
-             guestMenu();
+        case 72: // UP
+            if (current > 0) current--;
             break;
-        case 2:
-            candidateAuthMenu();
+
+        case 80: // DOWN
+            if (current < 4) current++;
             break;
-        case 3:
-        {
-            // // adminAuthMenu(); to be implemented
-            // Admin* admin = new Admin(1001, "votingsysAdmin", "admin1@mail.com", "123", this);
-            // // For testing, we directly call adminMenu with a dummy admin
-            // loading("Loading admin menu");
-            // adminMenu(admin);
-            adminAuthMenu();
+
+        case 13: // ENTER
+            blinkSelection(9 + current * 2,3);
+            system("cls");
+
+            switch (current)
+            {
+            case 0: guestMenu(); break;
+            case 1: candidateAuthMenu(); break;
+            case 2: adminAuthMenu(); break;
+            case 3: voterAuthMenu(); break;
+            case 4: return; // Exit
+            }
             break;
+
+        case 27: // ESC
+            return;
         }
-        case 4:
-            //voterAuthMenu(); to be implemented
-            voterAuthMenu();
-            break;
-        case 5:
-            cout << "Exiting the system. Goodbye!\n";
-            break;
-        default:
-            cout << "Invalid choice. Please try again.\n";
-        }
-    } while (choice != 5);
+
+        Sleep(80); // smooth effect, no flashing
+    }
+    while (true);
 }
+
 void VotingSystem::guestMenu()
 {
-    int choice = 0;
     Guest guest(this);
-    do
-    {
-        cout << "\n===== GUEST MENU =====\n";
-        cout << "1. View Voting Rules\n";
-        cout << "2. View All Elections\n";
-        cout << "3. View All Candidates\n";
-        cout << "4. Back to Main Menu\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    int current = 0;
+    char input;
 
-        switch (choice)
+    while (true)
+    {
+        system("cls");
+        drawGuestMenu(current);
+        input = _getch();
+
+        if (input == -32)
+            input = _getch();
+
+        switch (input)
         {
-        case 1:
-            guest.viewVotingRules();
+        case 72: // UP
+            if (current > 0) current--;
             break;
-        case 2:
-            guest.viewElections();
+
+        case 80: // DOWN
+            if (current < 3) current++;
             break;
-        case 3:
-            guest.viewAllCandidates();
+
+        case 13: // ENTER
+            system("cls");
+
+            switch (current)
+            {
+            case 0:
+                guest.viewVotingRules();
+                break;
+            case 1:
+                guest.viewElections();
+                break;
+            case 2:
+                guest.viewAllCandidates();
+                break;
+            case 3:
+                return; // Back to main menu
+            }
+
+            cout << "\nPress any key to continue...";
+            _getch();
             break;
-        case 4:
-            cout << "Returning to Main Menu...\n";
-            break;
-        default:
-            cout << "Invalid choice. Try again.\n";
+
+        case 27: // ESC
+            return;
         }
 
-    } while (choice != 4);
+        Sleep(80);
+    }
 }
+
 
 
 void VotingSystem::voterMenu(Voter* voter){

@@ -322,7 +322,7 @@
 1767163322 d:\iti\uml\voting system\us\voting-system\vs_01\guest.h
 	<string>
 
-1767163322 d:\iti\uml\voting system\us\voting-system\vs_01\admin.h
+1767165957 d:\iti\uml\voting system\us\voting-system\vs_01\admin.h
 	"User.h"
 
 1767163322 d:\iti\uml\voting system\us\voting-system\vs_01\candidate.h
@@ -390,7 +390,7 @@
 1767163322 d:\iti\uml\voting system\us\voting-system\vs_01\voter.h
 	"User.h"
 
-1767165311 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
+1767168065 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
 	"VotingSystem.h"
 	"User.h"
 	"Candidate.h"
@@ -404,10 +404,17 @@
 	<limits>
 	<unordered_map>
 	<windows.h>
+	<conio.h>
 
-1767164859 source:d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.cpp
+1767168051 source:d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.cpp
 	"ConsoleUI.h"
+	"UI.h"
+	<iostream>
+	<limits>
+	<windows.h>
+	<conio.h>
+	<string.h>
 
-1767164785 d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.h
+1767168270 d:\iti\uml\voting system\us\voting-system\vs_01\consoleui.h
 	<windows.h>
 
