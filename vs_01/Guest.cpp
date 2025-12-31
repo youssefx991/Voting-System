@@ -201,6 +201,8 @@ void Guest::viewCandidateDetails(int candidateId)
      ::system("cls");
 }
 
+
+//ss
 void Guest::viewAllCandidates()
 {
 
