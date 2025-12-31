@@ -358,12 +358,20 @@
 	"Candidate.h"
 	"VotingSystem.h"
 
-1767163322 source:d:\iti\uml\voting system\us\voting-system\vs_01\guest.cpp
+1767171872 source:d:\iti\uml\voting system\us\voting-system\vs_01\guest.cpp
 	"Guest.h"
 	"VotingSystem.h"
 	"Election.h"
 	"User.h"
+	"UI.h"
+	"ConsoleUI.h"
 	<iostream>
+	<limits>
+	<windows.h>
+	<conio.h>
+	<string.h>
+	<iostream>
+	<conio.h>
 
 1767163322 source:d:\iti\uml\voting system\us\voting-system\vs_01\test.cpp
 

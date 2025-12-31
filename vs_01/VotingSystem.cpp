@@ -191,8 +191,9 @@ void VotingSystem::guestMenu()
                 return; // Back to main menu
             }
 
-            cout << "\nPress any key to continue...";
+            cout << "Press any key to continue...";
             _getch();
+            system("cls");
             break;
 
         case 27:

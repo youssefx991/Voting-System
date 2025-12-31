@@ -2,7 +2,15 @@
 #include "VotingSystem.h"
 #include "Election.h"
 #include "User.h"
+#include "UI.h"
+#include "ConsoleUI.h"
+
 #include <iostream>
+#include <limits>
+#include<windows.h>
+#include <conio.h>
+#include <string.h>
+
 
 using namespace std;
 
@@ -10,26 +18,31 @@ using namespace std;
 Guest::Guest(VotingSystem* sys) : system(sys) {}
 
 /* ---------- Methods ---------- */
-void Guest::viewVotingRules()
-{
-    int choice = -1;
-    do
-    {
-        cout << "\n===== Voting Rules =====\n";
-        cout << "1. Each voter can vote only once per election.\n";
-        cout << "2. Voting is allowed only when the election is OPEN.\n";
-        cout << "3. Votes cannot be changed after submission.\n";
-        cout << "4. Banned users are not allowed to vote.\n";
-        cout << "5. Candidates cannot vote in elections they participate in.\n";
-        cout << "0. Back to Guest Menu\n";
-        cout << "========================\n";
-        cout << "Enter 0 to go back: ";
-        cin >> choice;
+#include <iostream>
+#include <conio.h>  // for _getch() on Windows
+using namespace std;
 
-        if (choice != 0)
-            cout << "Invalid input. Press 0 to go back.\n";
+void Guest::viewVotingRules() {
 
-    } while (choice != 0);
+    gotoxy(40, 7 + 0 * 2);
+    cout << BOLD  << "================ VOTING RULES ================\n" << RESET;
+
+    gotoxy(40, 7 + 1 * 2);
+    cout << BOLD << GREEN << "1. Each voter can vote only once per election.\n" << RESET;
+    gotoxy(40, 7 + 2 * 2);
+    cout << BOLD  << GREEN << "2. Voting is allowed only when the election " << BOLD << "OPEN" << RESET << GREEN << ".\n" << RESET;
+    gotoxy(40, 7 + 3 * 2);
+    cout << BOLD  << GREEN << "3. Votes cannot be changed after submission.\n" << RESET;
+    gotoxy(40, 7 + 4 * 2);
+    cout << BOLD  << GREEN << "4. Banned users are not allowed to vote.\n" << RESET;
+    gotoxy(40, 7 + 5 * 2);
+    cout << BOLD << GREEN << "5. Candidates cannot vote in elections they participate in.\n" << RESET;
+    gotoxy(40, 7 + 6 * 2);
+    cout << BOLD << YELLOW << "Press ENTER to go back to Guest Menu\n" << RESET;
+    gotoxy(40, 7 + 7 * 2);
+    cout << BOLD  << "=============================================\n" << RESET;
+
+    _getch();
 }
 
 void Guest::viewElections()
