@@ -7,11 +7,16 @@
 #include "Election.h"
 #include "Vote.h"
 #include "UI.h"
+#include "ConsoleUI.h"
 
 #include <iostream>
 #include <limits>
 #include <unordered_map>
+#include<windows.h>
+
 using namespace std;
+
+
 
 /* ---------- Destructor ---------- */
 VotingSystem::~VotingSystem()
@@ -93,12 +98,15 @@ void VotingSystem::fillData()
 }
 
 
+
+
 void VotingSystem::run() {
 
     int choice = 0;
     do
     {
-        cout << "\n===== VOTING SYSTEM MAIN MENU =====\n";
+        gotoxy(45,7);
+        cout << "===== VOTING SYSTEM MAIN MENU =====\n";
         cout << "1. Guest\n";
         cout << "2. Candidate\n";
         cout << "3. Admin\n";
@@ -579,3 +587,5 @@ std::unordered_map<int, int> VotingSystem::displayElectionResults(int electionId
 
     return results;
 }
+
+

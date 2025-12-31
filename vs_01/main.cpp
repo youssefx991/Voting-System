@@ -10,6 +10,7 @@
 #include "Candidate.h"
 #include "Election.h"
 #include "User.h"
+#include "ConsoleUI.h"
 
 using namespace std;
 
@@ -18,8 +19,7 @@ void testGuest(VotingSystem& system);
 void testAdmin(VotingSystem& system);
 void testCandidate(VotingSystem& system);
 
-/*ui decalration*/
-void gotoxy(int x, int y);
+
 /* ---------- main ---------- */
 int main()
 {
@@ -32,7 +32,6 @@ int main()
     cout<< "===== VOTING SYSTEM  =====\n";
     VotingSystem system;
     system.fillData();
-    gotoxy(50,5);
     system.run();
 
     // testGuest(system);
@@ -169,11 +168,5 @@ void testCandidate(VotingSystem& system)
 }
 
 
-/*ui implementation*/
-void gotoxy(int x, int y)
-{
-    COORD c = {(SHORT)x, (SHORT)y};
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
-}
 
 
