@@ -94,6 +94,9 @@ void User::login()
             if (user->getUsername() == username &&
                 user->getPassword() == password)
             {
+                // check user role in correct menu
+                if (user->getRole() != this->getRole()) break;
+                
                 userId = user->getUserId();
                 username = username;
                 password = password;
