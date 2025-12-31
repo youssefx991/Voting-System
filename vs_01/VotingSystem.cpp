@@ -215,13 +215,21 @@ void VotingSystem::voterMenu(Voter* voter){
     int choice = 0;
     do
     {
-        cout << "\n=== Voter Menu ===\n";
-        cout << "1. Logout\n";
+        cout << "1. View Rules\n";
+        cout << "2. View All Elections\n";
+        cout << "0. Logout\n";
         cout << "Choice: ";
         cin >> choice;
+        if (choice < 0 || choice > 2 || cin.fail()) {
+            cin.clear(); // clear the fail state
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+            cout << RED << "Invalid input! Please enter a number from 0 to 2 .\n" << RESET;
+        }
         switch (choice)
         {
-        case 1:
+        case 1: voter->rulesMenu(); break;
+        case 2: voter->availableElectionsMenu(); break;
+        case 0:
             voter->logout();
             return;
         default:
@@ -625,5 +633,6 @@ void VotingSystem::displayElectionResults(int electionId)
         }
     }
 }
+
 
 
