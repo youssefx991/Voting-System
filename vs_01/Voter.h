@@ -16,7 +16,11 @@ public:
 
     void vote(int electionId, int candidateId);
     bool hasVoted(int electionId) const;
+    void rulesMenu();
+    void availableElectionsMenu();
+    void ElectionDetails(int ElectionID);
     void viewVotingStatus();
 };
 
 #endif
+
