@@ -78,7 +78,7 @@ void drawGuestMenu(int current)
         "Back to Main Menu"
     };
 
-    gotoxy(45, 7);
+    gotoxy(50, 7);
     cout << "===== GUEST MENU =====";
 
     for (int i = 0; i < 4; i++)

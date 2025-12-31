@@ -99,10 +99,6 @@ void VotingSystem::fillData()
 }
 
 
-void drawVotingMenu(int current);
-void blinkSelection(int y);
-
-
 void VotingSystem::run()
 {
     int current = 0;
@@ -199,7 +195,8 @@ void VotingSystem::guestMenu()
             _getch();
             break;
 
-        case 27: // ESC
+        case 27:
+            system("cls");
             return;
         }
 
