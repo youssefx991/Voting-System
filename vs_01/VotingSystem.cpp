@@ -568,7 +568,7 @@ void VotingSystem::voterAuthMenu()
 }
 
 /* ---------- Election Result ---------- */
-std::unordered_map<int, int> VotingSystem::displayElectionResults(int electionId)
+void VotingSystem::displayElectionResults(int electionId)
 {
     std::unordered_map<int, int> results; // candidateId -> voteCount
 
@@ -594,25 +594,31 @@ std::unordered_map<int, int> VotingSystem::displayElectionResults(int electionId
         }
     }
 
-    // Display results
+    vector<pair<int, int>> sortedResults(results.begin(), results.end());
+
+    // Sort candidates by vote count in descending order
+    sort(sortedResults.begin(), sortedResults.end(),
+         [](const pair<int, int>& a, const pair<int, int>& b)
+         {
+             return b.second < a.second; // descending order
+         });
+    results.clear();
+
     cout << "\n=== Election Results for Election ID: " << electionId << " ===\n";
-    for (const auto& entry : results)
+    for (const auto& entry : sortedResults)
     {
-        // display candidate id and name nad vote count
         for (User* u : users)
         {
             if (u->getUserId() == entry.first &&
                 u->getRole() == "Candidate")
             {
-                cout << "- Candidate ID: " << u->getUserId()
+                cout << "- Candidate ID: " << entry.first
                      << ", Username: " << u->getUsername()
                      << ", Votes: " << entry.second << endl;
                 break;
             }
         }
     }
-
-    return results;
 }
 
 
