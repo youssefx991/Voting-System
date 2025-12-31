@@ -98,7 +98,7 @@ void Guest::viewElections()
             {
                 int electionId = elections[current].getElectionId();
                 viewElectionDetails(electionId);
-                cout << "\nPress any key to continue...";
+                cout <<endl<< "Press any key to continue...";
                 _getch();
             }
             break;
