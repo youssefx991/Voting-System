@@ -2,9 +2,10 @@
 #include "VotingSystem.h"
 #include "Election.h"
 #include "Vote.h"
+#include "UI.h"
 
 #include <iostream>
-
+#include <limits>
 using namespace std;
 
 /* ---------- Constructor ---------- */
@@ -225,7 +226,7 @@ void Voter::ElectionDetails(int ElectionID){
         cout << "Choice: ";
         cin >> choice;
 
-        // ❌ invalid input
+        //  invalid input
         if (cin.fail())
         {
             cin.clear();
@@ -240,10 +241,9 @@ void Voter::ElectionDetails(int ElectionID){
             return;
         }
 
-        // 2️⃣ Try voting
+        //  Try voting
         vote(ElectionID, choice);
 
     } while (true);
 
 }
-
