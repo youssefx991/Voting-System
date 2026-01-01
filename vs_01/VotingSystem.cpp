@@ -251,13 +251,15 @@ void VotingSystem::voterMenu(Voter* voter)
             switch (current)
             {
             case 0:
+                ::system("cls");
                 voter->rulesMenu(); // View Rules
                 break;
             case 1:
+                ::system("cls");
                 voter->availableElectionsMenu(); // View Elections
                 break;
             case 2:
-
+                ::system("cls");
                 voter->logout(); // Logout
                 ::system("cls");
                 return;
@@ -578,9 +580,6 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
         for (const Vote& v : votes)
             if (v.getElectionId() == electionID)
                 votesCount++;
-
-        gotoxy(30, 16);
-        cout << "Votes: " << votesCount;
 
         if (target->getStatus() == ElectionStatus::CLOSED)
         {
