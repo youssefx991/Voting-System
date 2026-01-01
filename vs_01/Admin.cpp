@@ -283,7 +283,7 @@ void Admin::removeCandidate(int electionId, int candidateId)
                  << "  Status: ";
          switch (election.getStatus())
         {
-            case ElectionStatus::CREATED: cout << "Created"; break;
+            case ElectionStatus::CREATED: cout << "Not Opened"; break;
             case ElectionStatus::OPENED:  cout << "Opened"; break;
             case ElectionStatus::CLOSED:  cout << "Closed"; break;
         }

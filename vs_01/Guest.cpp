@@ -133,7 +133,7 @@ void Guest::viewElectionDetails(int electionId)
             gotoxy(45, y++);
             cout << "Status: ";
             if (e.getStatus() == ElectionStatus::CREATED)
-                cout << "Created";
+                cout << "Not Opened";
             else if (e.getStatus() == ElectionStatus::OPENED)
                 cout << "Opened";
             else

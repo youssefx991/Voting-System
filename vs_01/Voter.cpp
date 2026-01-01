@@ -127,7 +127,12 @@ void Voter::availableElectionsMenu()
 
                 cout << "Id: " << e.getElectionId() << endl;
                 cout << "title: " << e.getTitle() << endl;
-                e.isOpen()? cout<< "open for voting"<<endl : cout<< "closed"<<endl;
+                if (e.getStatus() == ElectionStatus::CREATED)
+                    cout << "Status: Not Opened" << endl;
+                else if (e.getStatus() == ElectionStatus::OPENED)
+                    cout << "Status: Opened" << endl;
+                else
+                    cout << "Status: Closed" << endl;
 
                 if (e.getStatus() == ElectionStatus::CLOSED)
                 {
