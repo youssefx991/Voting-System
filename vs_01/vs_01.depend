@@ -393,7 +393,7 @@
 1767163322 source:d:\iti\uml\voting system\us\voting-system\vs_01\vote.cpp
 	"Vote.h"
 
-1767258409 source:d:\iti\uml\voting system\us\voting-system\vs_01\voter.cpp
+1767281642 source:d:\iti\uml\voting system\us\voting-system\vs_01\voter.cpp
 	"Voter.h"
 	"VotingSystem.h"
 	"Election.h"
@@ -405,7 +405,7 @@
 1767199016 d:\iti\uml\voting system\us\voting-system\vs_01\voter.h
 	"User.h"
 
-1767279639 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
+1767281304 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
 	"VotingSystem.h"
 	"User.h"
 	"Candidate.h"

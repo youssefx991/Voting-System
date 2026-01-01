@@ -105,7 +105,7 @@ void Voter::rulesMenu()
     cout << BOLD  << GREEN << "2. Voting is allowed only when the election " << BOLD << "OPEN" << RESET << GREEN << ".\n" << RESET;
     cout << BOLD  << GREEN << "3. Votes cannot be changed after submission.\n" << RESET;
     cout << BOLD  << GREEN << "4. Banned users are not allowed to vote.\n" << RESET;
-    cout << BOLD  << GREEN << "5. Candidates cannot vote in elections they participate in.\n" << RESET; 
+    cout << BOLD  << GREEN << "5. Candidates cannot vote in elections they participate in.\n" << RESET;
     cout << BOLD << YELLOW << "Press any key to go back to Guest Menu\n" << RESET;
     cout << BOLD  << "=============================================\n" << RESET;
     cin.ignore();
@@ -179,7 +179,7 @@ void Voter::availableElectionsMenu()
         }
 
     } while (choice != 0);
-
+    ::system("cls");
     return;
 }
 

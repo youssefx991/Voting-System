@@ -207,32 +207,73 @@ void VotingSystem::guestMenu()
 
 
 
-void VotingSystem::voterMenu(Voter* voter){
-    int choice = 0;
-    do
+void VotingSystem::voterMenu(Voter* voter)
+{
+    int current = 0;
+    char input;
+
+    const char* menu[] = { "View Rules", "View All Elections", "Logout" };
+    const int menuSize = 3;
+
+    while (true)
     {
-        cout << "1. View Rules\n";
-        cout << "2. View All Elections\n";
-        cout << "0. Logout\n";
-        cout << "Choice: ";
-        cin >> choice;
-        if (choice < 0 || choice > 2 || cin.fail()) {
-            cin.clear(); // clear the fail state
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
-            cout << RED << "Invalid input! Please enter a number from 0 to 2 .\n" << RESET;
-        }
-        switch (choice)
+        ::system("cls");
+
+        gotoxy(45, 5);
+        cout << BOLD << "===== VOTER MENU =====" << RESET;
+
+        // Draw menu with hover effect
+        for (int i = 0; i < menuSize; i++)
         {
-        case 1: voter->rulesMenu(); break;
-        case 2: voter->availableElectionsMenu(); break;
-        case 0:
+            gotoxy(50, 8 + i * 2);
+            if (i == current)
+                cout << "\033[47;30m> " << menu[i] << " <\033[0m"; // highlighted
+            else
+                cout << "  " << menu[i] << "  ";
+        }
+
+        input = _getch();
+        if (input == -32)
+            input = _getch(); // extended key
+
+        switch (input)
+        {
+        case 72: // UP
+            if (current > 0) current--;
+            break;
+
+        case 80: // DOWN
+            if (current < menuSize - 1) current++;
+            break;
+
+        case 13: // ENTER
+            blinkSelection(8 + current * 2, 1, 1); // blink selected option
+            switch (current)
+            {
+            case 0:
+                voter->rulesMenu(); // View Rules
+                break;
+            case 1:
+                voter->availableElectionsMenu(); // View Elections
+                break;
+            case 2:
+
+                voter->logout(); // Logout
+                ::system("cls");
+                return;
+            }
+            break;
+
+        case 27: // ESC
             voter->logout();
             return;
-        default:
-            cout << "Invalid choice. Please try again.\n";
         }
-    } while (true);
+
+        Sleep(80);
+    }
 }
+
+
 void VotingSystem::adminMenu(Admin* admin)
 {
     int current = 0;
@@ -670,45 +711,80 @@ void VotingSystem::adminAuthMenu()
 
 void VotingSystem::voterAuthMenu()
 {
-    // Implementation for voter authentication menu
-    // Implementation for admin authentication menu
-    int choice = 0;
-    do
-    {
-        cout << "\n===== Voter AUTH MENU =====\n";
-        cout << "1. Login\n";
-        cout << "2. Register\n";
-        cout << "3. Back to Main Menu\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+            ::system("cls");
+    int current = 0; // current highlighted option
+    char input;
 
-        Voter *voter = nullptr;
-        switch (choice)
+    const char* menu[] = { "Login", "Register", "Back " };
+    const int menuSize = 3;
+
+    while (true)
+    {
+
+
+        gotoxy(45, 5);
+        cout << BOLD << "===== VOTER AUTH MENU =====" << RESET;
+
+        // Draw menu with hover effect
+        for (int i = 0; i < menuSize; i++)
         {
-        case 1:
+            gotoxy(55, 8 + i * 2);
+            if (i == current)
+                cout << "\033[47;30m> " << menu[i] << " <\033[0m"; // highlighted
+            else
+                cout << "  " << menu[i] << "  ";
+        }
+
+        input = _getch();
+        if (input == -32)
+            input = _getch(); // extended key
+
+        switch (input)
         {
-            voter = new Voter(0, "", "", "", this);
-            voter->login();
-            loading("Loading voter menu");
-            voterMenu(voter);
+        case 72: // UP
+            if (current > 0) current--;
+            break;
+
+        case 80: // DOWN
+            if (current < menuSize - 1) current++;
+            break;
+
+        case 13: // ENTER
+        {
+            blinkSelection(8 + current * 2, 1, 1);
+
+            Voter* voter = new Voter(0, "", "", "", this);
+
+            switch (current)
+            {
+            case 0: // Login
+                ::system("cls");
+                voter->login();
+                loading("Loading voter menu");
+                voterMenu(voter);
+                break;
+
+            case 1: // Register
+                ::system("cls");
+                voter->registerUser();
+                loading("Loading voter menu");
+                voterMenu(voter);
+                break;
+
+            case 2: // Back
+                delete voter;
+                ::system("cls");
+                return; // exit menu
+            }
             break;
         }
-        case 2:
-        {
-            voter = new Voter(0, "", "", "", this);
-            voter->registerUser();
-            loading("Loading voter menu");
-            voterMenu(voter);
-            break;
+
+        case 27: // ESC
+            return;
         }
-        case 3:
-            cout << "Returning to Main Menu.\n";
-            // function to return to main menu will be added later
-            break;
-        default:
-            cout << "Invalid choice. Please try again.\n";
-        }
-    } while (choice != 3);
+
+        Sleep(80);
+    }
 }
 
 /* ---------- Election Result ---------- */
