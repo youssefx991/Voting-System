@@ -409,17 +409,17 @@ void VotingSystem::candidateMenu(Candidate* candidate)
         const char* menu[] =
         {
             "View My Elections",
-            "Logout"
+            "      Logout     "
         };
 
         for (int i = 0; i < 2; i++)
         {
-            gotoxy(55, 9 + i * 2);
+            gotoxy(48, 9 + i * 2);
 
             if (i == current)
                 cout << "\033[47;30m> " << menu[i] << " <\033[0m";
             else
-                cout << "  " << menu[i] << "  ";
+                cout << "   " << menu[i] << "  ";
         }
 
         char key = _getch();
@@ -432,7 +432,7 @@ void VotingSystem::candidateMenu(Candidate* candidate)
         }
         else if (key == 13)
         {
-            blinkSelection(9 + current * 2, 2, 1);
+            blinkSelection(9 + current * 2, 2, 2);
 
             if (current == 0)
                 candidateElectionsMenu(candidate);
@@ -469,7 +469,7 @@ void VotingSystem::candidateElectionsMenu(Candidate* candidate)
 
         for (int i = 0; i < myElections.size(); i++)
         {
-            gotoxy(50, y + i * 2);
+            gotoxy(48, y + i * 2);
 
             if (i == current)
                 cout << "\033[47;30m> "
@@ -480,11 +480,11 @@ void VotingSystem::candidateElectionsMenu(Candidate* candidate)
         }
 
         // Back
-        gotoxy(50, y + myElections.size() * 2);
+        gotoxy(48, y + myElections.size() * 2);
         if (current == myElections.size())
-            cout << "\033[47;30m> Back <\033[0m";
+            cout << "\033[47;30m>      Back      <\033[0m";
         else
-            cout << "  Back  ";
+            cout << "       Back       ";
 
         char key = _getch();
 
@@ -496,7 +496,7 @@ void VotingSystem::candidateElectionsMenu(Candidate* candidate)
         }
         else if (key == 13)
         {
-            blinkSelection(y + current * 2, 2, 1);
+            blinkSelection(y + current * 2, 2, 2);
 
             if (current == myElections.size())
                 return;
@@ -570,7 +570,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
         int y = 21;
         for (int i = 0; i < 2; i++)
         {
-            gotoxy(45, y + i * 2);
+            gotoxy(48, y + i * 2);
 
             if (i == current)
                 cout << "\033[47;30m> " << menu[i] << " <\033[0m";

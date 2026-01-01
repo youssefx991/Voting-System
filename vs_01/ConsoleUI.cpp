@@ -48,6 +48,8 @@ void blinkSelection(int y, int numOfBlinks, int numOFmenu)
 
     else
         if (numOFmenu==1)x=50;
+    else
+        if(numOFmenu==2)x=48;
 
     string message ="\033[42;30m    SELECTED     \033[0m";
     string space ="                  ";
@@ -55,6 +57,11 @@ void blinkSelection(int y, int numOfBlinks, int numOFmenu)
     if(numOFmenu==1)
     {
         message ="\033[42;30m       SELECTED         \033[0m";
+        space ="                         ";
+    }
+    if(numOFmenu==2)
+    {
+        message ="\033[42;30m         SELECTED         \033[0m";
         space ="                         ";
     }
     for (int i = 0; i < numOfBlinks; i++)

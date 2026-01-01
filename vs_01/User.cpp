@@ -187,5 +187,6 @@ void User::registerUser()
 
 void User::logout()
 {
+    gotoxy(47,12);
     cout << "Logged out successfully." << endl;
 }
