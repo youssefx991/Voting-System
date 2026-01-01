@@ -765,4 +765,103 @@ void VotingSystem::displayElectionResults(int electionId)
     }
 }
 
+int VotingSystem::viewAllCandidatesHover()
+{
+    vector<Candidate*> candidates;
+
+    // Collect candidates from users
+    for (User* u : users)
+    {
+        if (u->getRole() == "Candidate")
+        {
+            candidates.push_back(static_cast<Candidate*>(u));
+        }
+    }
+
+    if (candidates.empty())
+    {
+        gotoxy(40, 20);
+        cout << "No candidates available.";
+        _getch();
+        return -1;
+    }
+
+    int current = 0;
+    char input;
+
+    while (true)
+    {
+        system("cls");
+
+        gotoxy(40, 4);
+        cout << BOLD << "=========== ALL CANDIDATES ===========" << RESET;
+
+        int startY = 7;
+
+        // Draw candidates
+        for (int i = 0; i < candidates.size(); i++)
+        {
+            int y = startY + i * 2;
+
+            gotoxy(30, y);
+            cout << "==============================================";
+
+            gotoxy(32, y + 1);
+
+            if (i == current)
+                cout << BOLD << GREEN << "> ";
+            else
+                cout << "  ";
+
+            cout << "ID: " << candidates[i]->getUserId()
+                 << " | " << candidates[i]->getUsername()
+                 << " | " << candidates[i]->getEmail();
+
+            cout << RESET;
+        }
+
+        // Back option
+        int backY = startY + candidates.size() * 2;
+
+        gotoxy(30, backY);
+        cout << "==============================================";
+
+        gotoxy(32, backY + 1);
+        if (current == candidates.size())
+            cout << BOLD << GREEN << "> BACK" << RESET;
+        else
+            cout << "  BACK";
+
+        // Input
+        input = _getch();
+        if (input == -32)
+            input = _getch();
+
+        switch (input)
+        {
+        case 72: // UP
+            if (current > 0) current--;
+            break;
+
+        case 80: // DOWN
+            if (current < candidates.size()) current++;
+            break;
+
+        case 13: // ENTER
+            blinkSelection(startY + current * 2 + 1, 1, 1);
+
+            if (current == candidates.size())
+                return -1; // BACK
+
+            return candidates[current]->getUserId();
+
+        case 27: // ESC
+            return -1;
+        }
+
+        Sleep(80);
+    }
+}
+
+
 

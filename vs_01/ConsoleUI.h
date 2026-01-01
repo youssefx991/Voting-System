@@ -23,4 +23,6 @@ std::string inputField(int x, int y, int maxLen, bool isPassword = false);
 void drawAdminMenu(int current, const std::string& adminName);
 
 void drawAdminAuthMenu(int current);
+
+void drawAdminElectionMenu(int current, bool isOpen);
 #endif // CONSOLEUI_H_INCLUDED

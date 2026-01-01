@@ -19,6 +19,8 @@ Candidate::Candidate(int id,
 {
 }
 
+
+
 /* ---------- Role ---------- */
 string Candidate::getRole() const
 {

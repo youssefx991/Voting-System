@@ -53,6 +53,7 @@ public:
 
     /* ---------- Election Result ---------- */
     void displayElectionResults(int electionId);
+    int viewAllCandidatesHover();
 
 };
 

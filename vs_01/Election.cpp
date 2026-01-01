@@ -86,7 +86,7 @@ void Election::setDescription(const string& newDescription)
     description = newDescription;
 }
 
-Candidate* Candidate::getCandidateById(VotingSystem* system, int id)
+ Candidate* Candidate::getCandidateById(VotingSystem* system, int id)
 {
     vector<User*> users = system->getUsers();
     for (User* u : users)

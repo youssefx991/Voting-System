@@ -268,4 +268,41 @@ void drawAdminAuthMenu(int current)
     cout << "===========================";
 }
 
+void drawAdminElectionMenu(int current, bool isOpen)
+{
+    const char* menuOpen[] = {
+        "Close Election",
+        "Update Election",
+        "View Results",
+        "Add Candidate",
+        "Remove Candidate",
+        "Back"
+    };
+
+    const char* menuClosed[] = {
+        "Open Election",
+        "Update Election",
+        "View Results",
+        "Add Candidate",
+        "Remove Candidate",
+        "Back"
+    };
+
+    const char** menu = isOpen ? menuOpen : menuClosed;
+
+    int x = 45;
+    int y = 12;
+
+    for (int i = 0; i < 6; i++)
+    {
+        gotoxy(x, y + i * 2);
+
+        if (i == current)
+            cout << "\033[47;30m> " << menu[i] << " <\033[0m";
+        else
+            cout << "  " << menu[i] << "  ";
+    }
+}
+
+
 

@@ -2,10 +2,13 @@
 #include "VotingSystem.h"
 #include "Election.h"
 #include "Candidate.h"
+#include "UI.h"
+#include "ConsoleUI.h"
 
 #include <iostream>
 #include <limits>
-#include "UI.h"
+#include <conio.h>
+
 
 using namespace std;
 
@@ -28,68 +31,118 @@ string Admin::getRole() const
 /* ---------- Create Election ---------- */
 int Admin::createElection()
 {
-    int id;
-    cout << "Enter Election ID: ";
-    cin >> id;
+    //::system("cls");
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    int centerX = 40;
+    int startY  = 7;
 
+    gotoxy(centerX, startY);
+    cout << BOLD << "======== CREATE NEW ELECTION ========" << RESET;
+
+    gotoxy(centerX, startY + 3);
+    cout << "Election ID:";
+
+    gotoxy(centerX, startY + 5);
+    cout << "Title:";
+
+    gotoxy(centerX, startY + 7);
+    cout << "Description:";
+
+    // input fields
+    string idStr  = inputField(centerX + 15, startY + 3, 6, false);
+    string title  = inputField(centerX + 15, startY + 5, 25, false);
+    string desc   = inputField(centerX + 15, startY + 7, 40, false);
+
+    // validate ID numeric
+    if (idStr.empty() || !isdigit(idStr[0]))
+    {
+        gotoxy(centerX, startY + 10);
+        cout << RED << "Invalid Election ID!" << RESET;
+        Sleep(1200);
+        return -1;
+    }
+
+    int id = stoi(idStr);
+
+    // check ID uniqueness
     for (const Election& e : system->getElections())
     {
         if (e.getElectionId() == id)
         {
-            cout << "Election ID already exists.\n";
+            gotoxy(centerX, startY + 10);
+            cout << RED << "Election ID already exists!" << RESET;
+            Sleep(1200);
             return -1;
         }
     }
 
-    string title, description;
+    // create election
+    system->getElections().emplace_back(id, title, desc);
 
-    cout << "Enter Election Title: ";
-    getline(cin, title);
+    gotoxy(centerX, startY + 10);
+    cout << GREEN << "Election created successfully!" << RESET;
 
-    cout << "Enter Election Description: ";
-    getline(cin, description);
-
-    system->getElections().emplace_back(id, title, description);
-    cout << "Election has been created successfully.\n";
-
+    Sleep(1200);
     return id;
 }
+
 
 /* ---------- Update Election ---------- */
 void Admin::updateElection(int electionId)
 {
+    Election* target = nullptr;
     for (Election& e : system->getElections())
     {
         if (e.getElectionId() == electionId)
         {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            string newTitle, newDescription;
-
-            cout << "Current title: " << e.getTitle() << endl;
-            cout << "Enter new title (or press Enter to keep current): ";
-            getline(cin, newTitle);
-            
-
-            if (!newTitle.empty())
-                e.setTitle(newTitle);
-
-            
-            cout << "Current description: " << e.getDescription() << endl;
-            cout << "Enter new description (or press Enter to keep current): ";
-            getline(cin, newDescription);
-
-            if (!newDescription.empty())
-                e.setDescription(newDescription);
-
-            cout << "Election updated successfully.\n";
-            return;
+            target = &e;
+            break;
         }
     }
 
-    cout << "Election with ID " << electionId << " not found.\n";
+    if (!target)
+    {
+        gotoxy(40, 20);
+        cout << RED << "Election with ID " << electionId << " not found." << RESET;
+        _getch();
+        return;
+    }
+
+    ::system("cls");
+    int centerX = 40;
+    int startY = 7;
+
+    gotoxy(centerX, startY);
+    cout << BOLD << "========== UPDATE ELECTION ==========" << RESET;
+
+    // Title
+    gotoxy(centerX, startY + 3);
+    cout << "Current title: " << target->getTitle();
+
+    gotoxy(centerX, startY + 5);
+    cout << "New title (Enter to keep current): ";
+
+    string newTitle = inputField(centerX + 40, startY + 5, 30, false);
+    if (!newTitle.empty())
+        target->setTitle(newTitle);
+
+    // Description
+    gotoxy(centerX, startY + 7);
+    cout << "Current description: " << target->getDescription();
+
+    gotoxy(centerX, startY + 9);
+    cout << "New description (Enter to keep current): ";
+
+    string newDesc = inputField(centerX + 40, startY + 9, 30, false);
+    if (!newDesc.empty())
+        target->setDescription(newDesc);
+
+    gotoxy(centerX, startY + 12);
+    cout << GREEN << "Election updated successfully!" << RESET;
+
+    _getch();
 }
+
 
 /* ---------- Open Election ---------- */
 void Admin::openElection(int electionId)
@@ -143,7 +196,7 @@ void Admin::closeElection(int electionId)
 void Admin::viewVoters()
 {
     loading("Loading Voters List");
-  
+
     cout << "+-------------------------------------------------------------------+\n";
     cout << "                     VOTER LIST WINDOW                               \n";
     cout << "+-------------------------------------------------------------------+\n";
@@ -154,7 +207,7 @@ void Admin::viewVoters()
             cout << "ID: " << u->getUserId()
                  << ", Username: " <<BOLD << u->getUsername() << RESET
                  << ", Email: " << u->getEmail()
-                 << ", Status: ";   
+                 << ", Status: ";
                 if (u->getBanStatus())
                     cout << RED << "BANNED";
                 else
@@ -164,12 +217,12 @@ void Admin::viewVoters()
 
             this_thread::sleep_for(chrono::milliseconds(250));
         }
-        
+
     }
     cout << "+-------------------------------------------------------------------+\n";
 
 
-    
+
     cout << endl;
 }
 
@@ -189,7 +242,7 @@ void Admin::banVoter(int voterId)
             }
 
             u->ban();
-            cout << BOLD << GREEN 
+            cout << BOLD << GREEN
                  << "Voter banned successfully.\n"
                  << RESET;
             return;
@@ -276,86 +329,107 @@ void Admin::removeCandidate(int electionId, int candidateId)
 
 
 
-  void Admin::getElection(Election &election ){
-        cout<<"============ Election Details ============="<<endl;
-       cout << "ID: " << election.getElectionId()<<endl
-                 << "  Title: " << election.getTitle()<<endl
-                 << "  Status: ";
-         switch (election.getStatus())
+  void Admin::getElection(Election& election)
+{
+    int current = 0;
+    char input;
+
+    while (true)
+    {
+        ::system("cls");
+
+        gotoxy(40, 6);
+        cout << BOLD << "============ Election Details =============" << RESET;
+
+        gotoxy(40, 8);
+        cout << "ID: " << election.getElectionId();
+
+        gotoxy(40, 9);
+        cout << "Title: " << election.getTitle();
+
+        gotoxy(40, 10);
+        cout << "Status: ";
+
+        switch (election.getStatus())
         {
-            case ElectionStatus::CREATED: cout << "Not Opened"; break;
-            case ElectionStatus::OPENED:  cout << "Opened"; break;
-            case ElectionStatus::CLOSED:  cout << "Closed"; break;
+        case ElectionStatus::CREATED: cout << "Not Opened"; break;
+        case ElectionStatus::OPENED:  cout << "Opened"; break;
+        case ElectionStatus::CLOSED:  cout << "Closed"; break;
         }
-        cout << endl;
 
-        election.isOpen()?cout<<"1. close ":cout<<"1. open";
-        cout<<endl
-        <<"2. Update election"<<endl
-        <<"3. View Results"<<endl
-        <<"4. Add candidate"<<endl
-        <<"5. Remove candidate"<<endl;
-        cout << "Enter Election number of operation (or any invalid input to return): ";
-        int option ;
-        cin>>option;
-        switch(option){
-        case 1:
-            (election.isOpen())?election.close():election.open();
-            break;
-        case 2:
-            updateElection(election.getElectionId());
-            break;
-        case 3:
+        drawAdminElectionMenu(current, election.isOpen());
+
+        input = _getch();
+        if (input == -32)
+            input = _getch();
+
+        switch (input)
         {
-            cout << "Election Results:\n";
-            system->displayElectionResults(election.getElectionId());
-            cout << "Press anything to go back: ";
-            cin.ignore();
-            cin.get();
+        case 72: // UP
+            if (current > 0) current--;
             break;
-        }
-        case 4:{
-            int cand;
-            /// view all candidate
-            int i=1;
-            for(int cId: election.getCandidates()){
-                cout<< "======================="<<endl;
-                cout<<"               candidate num: "<< i<<"#                 "<<endl;
 
-                Candidate *c= c->getCandidateById(Admin::system,cId);
+        case 80: // DOWN
+            if (current < 5) current++;
+            break;
 
-                cout<<" Candidate ID:"<<c->getUserId()<<endl
-                <<" Candidate username:"<<c->getUsername()<<endl
-                <<" Candidate Email:"<<c->getEmail()<<endl;
-                i++;
+        case 13: // ENTER
+            blinkSelection(12 + current * 2, 1, 1);
+
+            switch (current)
+            {
+            case 0: // Open / Close
+                election.isOpen() ? election.close() : election.open();
+                break;
+
+            case 1: // Update
+                updateElection(election.getElectionId());
+                break;
+
+            case 2: // Results
+                ::system("cls");
+                system->displayElectionResults(election.getElectionId());
+                _getch();
+                break;
+
+            case 3: // Add candidate
+                    {
+                        int candId = system->viewAllCandidatesHover();
+                        if (candId != -1)
+                        {
+                            addCandidate(election.getElectionId(), candId);
+                        }
+                        break;
+                    }
+
+            case 4: // Remove candidate
+            {
+                ::system("cls");
+                int candi;
+                int i=1;
+                 for(int cId: election.getCandidates()){
+                        cout<< "======================="<<endl;
+                 cout<<" candidate num: "<< i<<"# "<<endl;
+                  Candidate* c = Candidate::getCandidateById(Admin::system, cId);
+                  cout<<" Candidate ID:"<<c->getUserId()
+                  <<endl <<" Candidate username:"<<c->getUsername()
+                  <<endl <<" Candidate Email:"<<c->getEmail()
+                  <<endl; i++;
+                   }
+                cout<< "enter candidate id to remove"<<endl;
+                 cin>>candi; removeCandidate(election.getElectionId(), candi);
+                  break;
             }
-            cout<< "enter candidate id to add :"<<endl;
-            cin>>cand;
 
-            addCandidate(election.getElectionId(), cand);
-            break;
-        }
-        case 5:{
-            int candi;
-            int i=1;
-              for(int cId: election.getCandidates()){
-                cout<< "======================="<<endl;
-                cout<<"               candidate num: "<< i<<"#                 "<<endl;
-
-                Candidate *c= c->getCandidateById(Admin::system,cId);
-
-                cout<<" Candidate ID:"<<c->getUserId()<<endl
-                <<" Candidate username:"<<c->getUsername()<<endl
-                <<" Candidate Email:"<<c->getEmail()<<endl;
-                i++;
+            case 5: // Back
+                return;
             }
-            cout<< "enter candidate id to remove"<<endl;
-            cin>>candi;
-            removeCandidate(election.getElectionId(), candi);
             break;
 
+        case 27: // ESC
+            return;
         }
-        default:
-            cout<< "wrong input "<<endl;
-        }
+
+        Sleep(80);
     }
+}
