@@ -534,7 +534,13 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
         cout << "Description: " << target->getDescription();
 
         gotoxy(30, 12);
-        cout << "Status: " << (target->isOpen() ? "OPENED" : "CLOSED");
+        cout << "Status: ";
+        if (target->getStatus() == ElectionStatus::OPENED)
+            cout << "OPEN";
+        else if (target->getStatus() == ElectionStatus::CREATED)
+            cout << "Not Opened";
+        else
+            cout << "CLOSED";
 
         gotoxy(30, 14);
         cout << "Candidates: " << target->getCandidates().size();
@@ -552,6 +558,7 @@ void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electi
             gotoxy(30, 18);
             cout << "Your Votes: "
                  << candidate->viewVoteCount(electionID);
+            displayElectionResults(electionID);
         }
 
         const char* menu[] =
