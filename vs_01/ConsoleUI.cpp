@@ -208,3 +208,64 @@ string inputField(int x, int y, int maxLen, bool isPassword)
     }
 }
 
+void drawAdminMenu(int current, const string& adminName)
+{
+    system("cls");
+
+    gotoxy(45, 6);
+   // cout << BOLD << "WELCOME " << adminName << RESET;
+
+    gotoxy(45, 8);
+    cout << "=========== ADMIN MENU ===========";
+
+    const char* menu[] =
+    {
+        "Create Election",
+        "View All Elections",
+        "View All Voters",
+        "Logout"
+    };
+
+    for (int i = 0; i < 4; i++)
+    {
+        gotoxy(50, 11 + i * 2);
+
+        if (i == current)
+            cout << "\033[47;30m> " << menu[i] << " <\033[0m";
+        else
+            cout << "  " << menu[i] << "  ";
+    }
+
+    gotoxy(45, 21);
+    cout << "==================================";
+}
+
+
+void drawAdminAuthMenu(int current)
+{
+    system("cls");
+
+    gotoxy(45, 7);
+    cout << BOLD << "===== ADMIN AUTH MENU =====" << RESET;
+
+    const char* options[] =
+    {
+        "Login",
+        "Back "
+    };
+
+    for (int i = 0; i < 2; i++)
+    {
+        gotoxy(55, 11 + i * 2);
+
+        if (current == i)
+            cout << "\033[47;30m> " << options[i] << " <\033[0m";
+        else
+            cout << "  " << options[i] << "  ";
+    }
+
+    gotoxy(45, 17);
+    cout << "===========================";
+}
+
+

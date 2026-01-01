@@ -19,4 +19,8 @@ void drawGuestMenu(int current);
 void drawCandidateAuthMenu(int current);
 
 std::string inputField(int x, int y, int maxLen, bool isPassword = false);
+
+void drawAdminMenu(int current, const std::string& adminName);
+
+void drawAdminAuthMenu(int current);
 #endif // CONSOLEUI_H_INCLUDED

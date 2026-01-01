@@ -233,100 +233,88 @@ void VotingSystem::voterMenu(Voter* voter){
         }
     } while (true);
 }
-
-void VotingSystem::adminMenu(Admin *admin)
+void VotingSystem::adminMenu(Admin* admin)
 {
-    string adminName = admin->getUsername();
-    cout << BOLD << "WELCOME " << adminName << "!" << RESET << endl;
-
-    int choice = -1;
+    int current = 0;
+    char input;
 
     while (true)
     {
-        // Display main menu
-        cout << "\n"
-             << BOLD << "============================ Admin Menu ============================" << RESET << endl;
-        cout << "1. Create Election\n";
-        cout << "2. View All Elections\n";
-        cout << "3. View All Voters\n";
-        cout << "0. Logout\n";
-        cout << "Choose: ";
+        drawAdminMenu(current, admin->getUsername());
+        input = _getch();
 
-        cin >> choice;
+        if (input == -32)
+            input = _getch();
 
-        // Input validation
-        if (cin.fail() || choice < 0 || choice > 3)
+        switch (input)
         {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << RED << "Invalid input! Please enter a number from 0 to 3.\n"
-                 << RESET;
-            continue; // back to menu
-        }
-
-        switch (choice)
-        {
-        case 1:
-            admin->createElection();
+        case 72: // UP
+            if (current > 0) current--;
             break;
 
-        case 2:
+        case 80: // DOWN
+            if (current < 3) current++;
+            break;
+
+        case 13: // ENTER
+        {
+            blinkSelection(11 + current * 2, 2, 1);
+            system("cls");
+
+            switch (current)
             {
-            int electionId;
-            admin->viewElections();
-            cout << "Enter Election ID to get more details: ";
-            cin >> electionId;
-            bool found = false;
-            for (Election &e : elections)
+            case 0: // Create Election
+                admin->createElection();
+                break;
+
+            case 1: // View Elections
             {
-                if (e.getElectionId() == electionId)
+                admin->viewElections();
+
+                gotoxy(45, 20);
+                cout << "Select Election ID:";
+                int id = stoi(inputField(65, 20, 5, false));
+
+                for (Election& e : elections)
                 {
-                    admin->getElection(e);
-                    found = true;
+                    if (e.getElectionId() == id)
+                        admin->getElection(e);
                 }
-            }
-            if (!found)
-            {
-                cout << RED << "Election ID not found!\n"
-                     << RESET;
                 break;
             }
-            break;
-        }
-            case 3:
+
+            case 2: // View Voters
             {
                 admin->viewVoters();
-
-                int voterId = -1;
-                cout << "Enter Voter ID to ban (or any invalid input to return): ";
-                cin >> voterId;
-
-                if (cin.fail() || voterId < 0)
-                {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    loading("Returning to menu"); // optional animation
-                    break;
-                }
-
-                admin->banVoter(voterId);
+                gotoxy(45, 20);
+                cout << "Enter Voter ID to ban:";
+                int id = stoi(inputField(68, 20, 5, false));
+                admin->banVoter(id);
                 break;
             }
 
-        case 0:
-            cout << YELLOW << "Logging out...\n"
-                 << RESET;
-            admin->logout();
-            return; // exit menu
+            case 3: // Logout
+                admin->logout();
+                system("cls");
+                return;
+            }
 
-        default:
-            cout << RED << "Invalid choice!\n"
-                 << RESET;
+            gotoxy(45, 23);
+            cout << "Press any key to continue...";
+            _getch();
+            system("cls");
             break;
         }
+
+        case 27: // ESC
+            admin->logout();
+            system("cls");
+            return;
+        }
+
+        Sleep(80);
     }
 }
-
 
 /* -------- Candidate Menus --------*/
 void VotingSystem::candidateAuthMenu()
@@ -621,36 +609,64 @@ void VotingSystem::viewElectionCandidates(Election* election)
 /* ---------- Authentication Menus ---------- */
 void VotingSystem::adminAuthMenu()
 {
-    // Implementation for admin authentication menu
-    int choice = 0;
-    do
-    {
-        cout << "\n===== Admin AUTH MENU =====\n";
-        cout << "1. Login\n";
-        cout << "2. Back to Main Menu\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    int current = 0;
+    char input;
 
-        Admin *admin = nullptr;
-        switch (choice)
+    while (true)
+    {
+        drawAdminAuthMenu(current);
+        input = _getch();
+
+        if (input == -32)
+            input = _getch(); // arrow keys
+
+        switch (input)
         {
-        case 1:
+        case 72: // UP
+            if (current > 0) current--;
+            break;
+
+        case 80: // DOWN
+            if (current < 1) current++;
+            break;
+
+        case 13: // ENTER
         {
-            admin = new Admin(0, "", "", "", this);
-            admin->login();
-            loading("Loading admin menu");
-            adminMenu(admin);
+            blinkSelection(11 + current * 2, 2, 1);
+            system("cls");
+
+            Admin* admin = new Admin(0, "", "", "", this);
+
+            switch (current)
+            {
+            case 0: // Login
+                admin->login();
+                loading("Loading admin menu");
+                adminMenu(admin);
+                break;
+
+            case 1: // Back
+                delete admin;
+                system("cls");
+                return;
+            }
+
+            gotoxy(45, 23);
+            cout << "Press any key to continue...";
+            _getch();
+            system("cls");
             break;
         }
-        case 2:
-            cout << "Returning to Main Menu.\n";
-            // function to return to main menu will be added later
-            break;
-        default:
-            cout << "Invalid choice. Please try again.\n";
+
+        case 27: // ESC
+            system("cls");
+            return;
         }
-    } while (choice != 2);
+
+        Sleep(80);
+    }
 }
+
 
 void VotingSystem::voterAuthMenu()
 {
