@@ -118,24 +118,42 @@ void User::login()
 
 
 
-
 void User::registerUser()
 {
-    bool exists;
-    string inputUsername, inputEmail, inputPassword;
+    bool validInput = false;
 
     do
     {
-        exists = false;
+        //::system("cls");
 
-        cout << "Enter username: ";
-        cin >> inputUsername;
+        int centerX = 45;
+        int startY  = 6;
 
+        gotoxy(centerX, startY);
+        cout << BOLD << "========= REGISTER =========" << RESET;
+
+        gotoxy(centerX, startY + 3);
+        cout << "Username:";
+
+        gotoxy(centerX, startY + 5);
+        cout << "Email:";
+
+        gotoxy(centerX, startY + 7);
+        cout << "Password:";
+
+        string inputUsername = inputField(centerX + 12, startY + 3, 20, false);
+        string inputEmail    = inputField(centerX + 12, startY + 5, 25, false);
+        string inputPassword = inputField(centerX + 12, startY + 7, 20, true);
+
+        bool exists = false;
+
+        // check username
         for (User* user : system->getUsers())
         {
             if (user->getUsername() == inputUsername)
             {
-                cout << "Username already exists." << endl;
+                gotoxy(38, startY + 11);
+                cout << RED << "Username already exists." << RESET;
                 exists = true;
                 break;
             }
@@ -143,14 +161,13 @@ void User::registerUser()
 
         if (exists) continue;
 
-        cout << "Enter email: ";
-        cin >> inputEmail;
-
+        // check email
         for (User* user : system->getUsers())
         {
             if (user->getEmail() == inputEmail)
             {
-                cout << "Email already registered." << endl;
+                gotoxy(38, startY + 11);
+                cout << RED << "Email already registered." << RESET;
                 exists = true;
                 break;
             }
@@ -158,31 +175,25 @@ void User::registerUser()
 
         if (exists) continue;
 
-        cout << "Enter password: ";
-        cin >> inputPassword;
+        // generate userId
+        int maxId = 0;
+        for (User* user : system->getUsers())
+            if (user->getUserId() > maxId)
+                maxId = user->getUserId();
 
-        break;
+        userId   = maxId + 1;
+        username = inputUsername;
+        email    = inputEmail;
+        password = inputPassword;
 
-    } while (true);
+        system->getUsers().push_back(this);
 
-    cout << "Registration successful!" << endl;
+        gotoxy(45, startY + 11);
+        cout << GREEN << "Registration successful!" << RESET;
 
-    username = inputUsername;
-    email = inputEmail;
-    password = inputPassword;
+        validInput = true;
 
-    // generate userId -- must be unique
-    int maxId = 0;
-    for (User *user : system->getUsers())
-    {
-        if (user->getUserId() > maxId)
-        {
-            maxId = user->getUserId();
-        }
-    }
-    userId = maxId + 1;
-
-    system->getUsers().push_back(this);
+    } while (!validInput);
 }
 
 void User::logout()
