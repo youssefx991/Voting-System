@@ -598,8 +598,13 @@ void VotingSystem::viewElectionCandidates(Election* election)
             {
                 cout << "- Candidate ID: " << u->getUserId()
                      << ", Username: " << u->getUsername()
-                     << ", Email: " << u->getEmail() << endl;
+                     << ", Email: " << u->getEmail();
+                Candidate* cand = static_cast<Candidate*>(u);
+                cout << ", Profile: " << cand->getProfileInfo() << endl;
+                break;
             }
+
+            
         }
     }
     _getch();

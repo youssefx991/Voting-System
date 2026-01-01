@@ -176,6 +176,8 @@ void Guest::viewCandidateDetails(int candidateId)
             cout << "Username: " << u->getUsername() << endl;
             cout << "Email: " << u->getEmail() << endl;
             cout << "Role: " << u->getRole() << endl;
+            Candidate* cand = static_cast<Candidate*>(u);
+            cout << "Profile Info: " << cand->getProfileInfo() << endl;
 
 
             cout << "Participating in Elections:\n";
@@ -236,16 +238,20 @@ void Guest::viewAllCandidates()
         {
             gotoxy(35, y); y += 2;
 
+            Candidate* cand = static_cast<Candidate*>(candidates[i]);
             if (current == i)
                 cout << "\033[47;30m> "
                      << "ID: " << candidates[i]->getUserId()
                      << " | Username: " << candidates[i]->getUsername()
                      << " | Email: " << candidates[i]->getEmail()
+                     << " | Profile: " << cand->getProfileInfo()
                      << " <\033[0m";
             else
                 cout << "  ID: " << candidates[i]->getUserId()
                      << " | Username: " << candidates[i]->getUsername()
-                     << " | Email: " << candidates[i]->getEmail()<<"  ";
+                     << " | Email: " << candidates[i]->getEmail()<<"  "
+                    << " | Profile: " << cand->getProfileInfo();
+            cout << endl;
 
             gotoxy(45, y); y += 2;
             cout << "==============================";

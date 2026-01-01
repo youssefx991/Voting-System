@@ -72,3 +72,7 @@ int Candidate::viewVoteCount(int electionId)
     return count;
 }
 
+string Candidate::getProfileInfo() const
+{
+    return profileInfo;
+}

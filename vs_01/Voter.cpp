@@ -216,6 +216,7 @@ void Voter::ElectionDetails(int ElectionID){
         for (int cid : targetElection->getCandidates())
         {
             cout << "Candidate ID: " << cid << endl;
+            cout << "------------------------------\n";
         }
 
         cout << "------------------------------\n";
