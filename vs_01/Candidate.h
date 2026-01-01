@@ -26,6 +26,8 @@ public:
     void viewMyElections();
     int viewVoteCount(int electionId);
   static Candidate* getCandidateById(VotingSystem* system, int id);
+
+  std::string getProfileInfo() const;
 };
 
 #endif

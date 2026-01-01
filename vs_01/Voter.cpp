@@ -215,7 +215,18 @@ void Voter::ElectionDetails(int ElectionID){
         cout << "Candidates:\n";
         for (int cid : targetElection->getCandidates())
         {
-            cout << "Candidate ID: " << cid << endl;
+            // get details of all candidates
+            for (User* u : system->getUsers())
+            {
+                if (u->getUserId() == cid && u->getRole() == "Candidate")
+                {
+                    cout << "- ID: " << u->getUserId()
+                         << ", Username: " << u->getUsername() << ", Email: " << u->getEmail();
+                    Candidate* cand = static_cast<Candidate*>(u);
+                    cout << ", Profile: " << cand->getProfileInfo() << endl;
+                    break;
+                }
+            }
         }
 
         cout << "------------------------------\n";

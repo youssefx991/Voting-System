@@ -59,9 +59,15 @@ void User::viewElections()
         // display each election in single line
         cout<<"ID: "<< e.getElectionId()
             <<", Title: " << e.getTitle()
-            <<", Description: " << e.getDescription()
-            <<", Status: " << (e.isOpen() ? "Open" : "Closed")
-            << endl;
+            <<", Description: " << e.getDescription();
+            cout<<", Status: ";
+            if (e.getStatus() == ElectionStatus::OPENED)
+                cout << "Open";
+            else if (e.getStatus() == ElectionStatus::CREATED)
+                cout << "Not Opened";
+            else
+                cout << "Closed";
+            cout << endl;
         // display candidates in election
         system->viewElectionCandidates(const_cast<Election*>(&e));
         cout << "----------------------------------------\n";
