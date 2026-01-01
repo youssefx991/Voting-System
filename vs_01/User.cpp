@@ -100,6 +100,10 @@ void User::login()
                 gotoxy(55,20);
                 cout << "Login successful!" << endl;
                 validInput = true;
+                //check kind of obj (admin ---> sys.admin-menu(admin)
+                                            //voter,
+                                            // cand)
+                // call voting sys
                 break;
             }
         }
