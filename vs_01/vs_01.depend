@@ -380,7 +380,7 @@
 	"UI.h"
 	<iostream>
 
-1767208466 source:d:\iti\uml\voting system\us\voting-system\vs_01\user.cpp
+1767250458 source:d:\iti\uml\voting system\us\voting-system\vs_01\user.cpp
 	"User.h"
 	"VotingSystem.h"
 	"Election.h"
@@ -403,7 +403,7 @@
 1767199016 d:\iti\uml\voting system\us\voting-system\vs_01\voter.h
 	"User.h"
 
-1767199983 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
+1767251306 source:d:\iti\uml\voting system\us\voting-system\vs_01\votingsystem.cpp
 	"VotingSystem.h"
 	"User.h"
 	"Candidate.h"

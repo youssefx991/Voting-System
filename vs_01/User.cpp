@@ -96,17 +96,13 @@ void User::login()
             {
                 // check user role in correct menu
                 if (user->getRole() != this->getRole()) break;
-                
+
                 userId = user->getUserId();
                 username = username;
                 password = password;
                 gotoxy(55,20);
                 cout << "Login successful!" << endl;
                 validInput = true;
-                //check kind of obj (admin ---> sys.admin-menu(admin)
-                                            //voter,
-                                            // cand)
-                // call voting sys
                 break;
             }
         }

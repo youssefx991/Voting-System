@@ -363,6 +363,8 @@ void VotingSystem::candidateAuthMenu()
             {
             case 0:
                 candidate->login();
+                ::system("cls");
+                gotoxy(47,0);
                 loading("Loading candidate menu");
                 candidateMenu(candidate);
                 break;
@@ -393,116 +395,201 @@ void VotingSystem::candidateAuthMenu()
         Sleep(80);
     }
 }
-
-void VotingSystem::candidateMenu(Candidate *candidate)
+void VotingSystem::candidateMenu(Candidate* candidate)
 {
-    int choice = 0;
-    do
+    int current = 0;
+
+    while (true)
     {
-        cout << "\n=== Candidate Menu ===\n";
-        cout << "1. View My Elections\n";
-        cout << "2. Logout\n";
-        cout << "Choice: ";
-        cin >> choice;
-        switch (choice)
+        system("cls");
+
+        gotoxy(45, 7);
+        cout << "===== CANDIDATE MENU =====";
+
+        const char* menu[] =
         {
-        case 1:
-            candidateElectionsMenu(candidate);
-            break;
-        case 2:
-            candidate->logout();
-            return;
-        default:
-            cout << "Invalid choice. Please try again.\n";
+            "View My Elections",
+            "Logout"
+        };
+
+        for (int i = 0; i < 2; i++)
+        {
+            gotoxy(55, 9 + i * 2);
+
+            if (i == current)
+                cout << "\033[47;30m> " << menu[i] << " <\033[0m";
+            else
+                cout << "  " << menu[i] << "  ";
         }
-    } while (true);
+
+        char key = _getch();
+
+        if (key == -32)
+        {
+            key = _getch();
+            if (key == 72 && current > 0) current--;     // up
+            if (key == 80 && current < 1) current++;    // down
+        }
+        else if (key == 13)
+        {
+            blinkSelection(9 + current * 2, 2, 1);
+
+            if (current == 0)
+                candidateElectionsMenu(candidate);
+            else
+            {
+                candidate->logout();
+                return;
+            }
+        }
+    }
 }
+
 void VotingSystem::candidateElectionsMenu(Candidate* candidate)
 {
-    cout << "\n=== My Elections ===\n";
-    candidate->viewMyElections();
-
-    int electionID;
-    do
-    {
-        cout << "Enter Election ID to view details (or 0 to go back): ";
-        cin >> electionID;
-        if (electionID == 0)
-            return;
-        else
-            candidateElectionDetailsMenu(candidate, electionID);
-    } while (true);
-}
-void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electionID)
-{
-    Election* target = nullptr;
+    vector<Election*> myElections;
 
     for (Election& e : elections)
     {
+        for (int cid : e.getCandidates())
+            if (cid == candidate->getUserId())
+                myElections.push_back(&e);
+    }
+
+    int current = 0;
+
+    while (true)
+    {
+        system("cls");
+
+        gotoxy(45, 7);
+        cout << "===== MY ELECTIONS =====";
+
+        int y = 9;
+
+        for (int i = 0; i < myElections.size(); i++)
+        {
+            gotoxy(50, y + i * 2);
+
+            if (i == current)
+                cout << "\033[47;30m> "
+                     << myElections[i]->getTitle()
+                     << " <\033[0m";
+            else
+                cout << "  " << myElections[i]->getTitle() << "  ";
+        }
+
+        // Back
+        gotoxy(50, y + myElections.size() * 2);
+        if (current == myElections.size())
+            cout << "\033[47;30m> Back <\033[0m";
+        else
+            cout << "  Back  ";
+
+        char key = _getch();
+
+        if (key == -32)
+        {
+            key = _getch();
+            if (key == 72 && current > 0) current--;
+            if (key == 80 && current < myElections.size()) current++;
+        }
+        else if (key == 13)
+        {
+            blinkSelection(y + current * 2, 2, 1);
+
+            if (current == myElections.size())
+                return;
+
+            candidateElectionDetailsMenu(
+                candidate,
+                myElections[current]->getElectionId()
+            );
+        }
+    }
+}
+
+void VotingSystem::candidateElectionDetailsMenu(Candidate* candidate, int electionID)
+{
+    Election* target = nullptr;
+    for (Election& e : elections)
         if (e.getElectionId() == electionID)
-        {
-            for (int cid : e.getCandidates())
-            {
-                if (cid == candidate->getUserId())
-                {
-                    target = &e;
-                    break;
-                }
-            }
-            if (target != nullptr)
-                break;
-        }
-    }
+            target = &e;
 
-    if (!target)
-    {
-        cout << "Election not found.\n";
-        return;
-    }
+    if (!target) return;
 
-    int choice = 0;
-    do
+    int current = 0;
+
+    while (true)
     {
-        cout << "\n=== Election Details ===\n";
-        cout << "Title: " << target->getTitle() << endl;
-        cout << "Description: " << target->getDescription() << endl;
-        cout<< "Status: " << (target->isOpen() ? "OPENED" : "NOT OPENED") << endl;
-        // total number of votes in this election, for all candidates
-        int voteCount = 0;
-        for (const Vote &v : votes)
-        {
+        system("cls");
+
+        gotoxy(40, 5);
+        cout << "===== ELECTION DETAILS =====";
+
+        gotoxy(30, 8);
+        cout << "Title: " << target->getTitle();
+
+        gotoxy(30, 10);
+        cout << "Description: " << target->getDescription();
+
+        gotoxy(30, 12);
+        cout << "Status: " << (target->isOpen() ? "OPENED" : "CLOSED");
+
+        gotoxy(30, 14);
+        cout << "Candidates: " << target->getCandidates().size();
+
+        int votesCount = 0;
+        for (const Vote& v : votes)
             if (v.getElectionId() == electionID)
-            {
-                voteCount++;
-            }
-        }
-        // number of voters all candidates
-        cout << "Number of Candidates: " << target->getCandidates().size() << endl;
-        cout <<"Number of Votes: " << voteCount << endl;
+                votesCount++;
+
+        gotoxy(30, 16);
+        cout << "Votes: " << votesCount;
 
         if (target->getStatus() == ElectionStatus::CLOSED)
         {
-            int myVotes = candidate->viewVoteCount(electionID);
-            cout << "Your Votes: " << myVotes << endl;
-            displayElectionResults(electionID);
+            gotoxy(30, 18);
+            cout << "Your Votes: "
+                 << candidate->viewVoteCount(electionID);
         }
 
-        cout << "1. View Election Candidates\n";
-        cout << "2. Back to My Elections\n";
-        cout << "Choice: ";
-        cin >> choice;
-        switch (choice)
+        const char* menu[] =
         {
-        case 1:
-            viewElectionCandidates(target);
-            break;
-        case 2:
-            return;
-        default:
-            cout << "Invalid choice. Please try again.\n";
+            "View Election Candidates",
+            "Back"
+        };
+
+        int y = 21;
+        for (int i = 0; i < 2; i++)
+        {
+            gotoxy(45, y + i * 2);
+
+            if (i == current)
+                cout << "\033[47;30m> " << menu[i] << " <\033[0m";
+            else
+                cout << "  " << menu[i] << "  ";
         }
-    } while (true);
+
+        char key = _getch();
+        if (key == -32)
+        {
+            key = _getch();
+            if (key == 72 && current > 0) current--;
+            if (key == 80 && current < 1) current++;
+        }
+        else if (key == 13)
+        {
+            blinkSelection(y + current * 2, 2, 1);
+
+            if (current == 0)
+                viewElectionCandidates(target);
+            else
+                return;
+        }
+    }
 }
+
 void VotingSystem::viewElectionCandidates(Election* election)
 {
 
@@ -520,6 +607,7 @@ void VotingSystem::viewElectionCandidates(Election* election)
             }
         }
     }
+    _getch();
     return;
 }
 
